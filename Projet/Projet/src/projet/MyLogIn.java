@@ -28,26 +28,26 @@ import javax.swing.JTextField;
  *
  * @author eliot
  */
-public class MyLogIn extends JPanel implements ActionListener {
-    private JRadioButton choice1;
-    private JRadioButton choice2;
-    private JRadioButton choice3;
-    private ButtonGroup group;
-    private boolean logedin = false;
-    private Vector<User> listOfUsers = new Vector();
-    private JButton enter;
-    private JLabel mail;
-    private JLabel password;
-    private JLabel employeenb;
-    private JTextField usermail;
-    private JPasswordField userpassword;
-    private JPasswordField useremployeenb;
+public class MyLogIn extends JPanel {
+
+    JRadioButton choice1;
+    JRadioButton choice2;
+    JRadioButton choice3;
+    ButtonGroup group;
+    boolean logedin = false;
+    boolean createnewaccount = false;
+    Vector<User> listOfUsers = new Vector();
+    JButton enter;
+    JButton newaccount;
+    JLabel mail;
+    JLabel password;
+    JLabel employeenb;
+    JTextField usermail;
+    JPasswordField userpassword;
+    JPasswordField useremployeenb;
     boolean employeeuser = false;
     boolean buyeruser = false;
     boolean selleruser = false;
-    Vector<Seller> listOfSellers = new Vector();
-    Vector<Buyer> listOfBuyers = new Vector();
-    Vector<Employee> listOfEmployees = new Vector();
 
     MyLogIn() {
         Font font = new Font("Consolas", Font.PLAIN, 30);
@@ -55,9 +55,6 @@ public class MyLogIn extends JPanel implements ActionListener {
         choice1 = new JRadioButton("Seller");
         choice2 = new JRadioButton("Buyer");
         choice3 = new JRadioButton("Employee");
-        choice1.addActionListener(this);
-        choice2.addActionListener(this);
-        choice3.addActionListener(this);
         choice1.setBounds(260, 10, 400, 30);
         choice2.setBounds(260, 60, 400, 30);
         choice3.setBounds(260, 110, 400, 30);
@@ -76,8 +73,10 @@ public class MyLogIn extends JPanel implements ActionListener {
         usermail = new JTextField();
         userpassword = new JPasswordField();
         useremployeenb = new JPasswordField();
-        userpassword.addActionListener(this);
-        usermail.addActionListener(this);
+        /*
+         userpassword.addActionListener(this);
+         usermail.addActionListener(this);
+         */
         usermail.setBounds(260, 200, 400, 30);
         userpassword.setBounds(260, 250, 400, 30);
         employeenb.setBounds(70, 140, 300, 50);
@@ -93,23 +92,21 @@ public class MyLogIn extends JPanel implements ActionListener {
         date.set(GregorianCalendar.YEAR, 1999);
         date.set(GregorianCalendar.MONTH, 5);
         date.set(GregorianCalendar.DAY_OF_MONTH, 29);
-        listOfSellers.add(new Seller("Eliott", "Morcillo", date, "12 Rue du Chien", "eliott.morcillo@edu.ece.fr"));
-        listOfBuyers.add(new Buyer("Eliott", "Morcillo", date, "12 Rue du Chien", "eliott.morcillo@edu.ece.fr"));
-        listOfEmployees.add(new Employee("Eliott", "Morcillo", date, "12 Rue du Chien", "eliott.morcillo@edu.ece.fr", "elektra1"));
-        listOfSellers.elementAt(0).setPassword("1234");
-        listOfBuyers.elementAt(0).setPassword("1234");
-        listOfEmployees.elementAt(0).setPassword("1234");
         this.setLayout(null);
         enter = new JButton("login");
-        enter.addActionListener(this);
+        newaccount = new JButton("new account");
         enter.setFont(font);
+        newaccount.setFont(font);
         enter.setFocusable(false);
+        newaccount.setFocusable(false);
         //enter.setSize(100, 30);
         enter.setBounds(310, 300, 300, 50);
+        newaccount.setBounds(310, 370, 300, 50);
         this.add(choice1);
         this.add(choice2);
         this.add(choice3);
         this.add(enter);
+        this.add(newaccount);
         this.add(mail);
         this.add(usermail);
         this.add(password);
@@ -118,13 +115,15 @@ public class MyLogIn extends JPanel implements ActionListener {
     }
 
     //can be used by the main frame to know if the user is loged or not
-
     public boolean isLoged() {
         return this.logedin;
     }
 
-    @Override
-    public void actionPerformed(ActionEvent ae) {
+    public boolean createNewAccount() {
+        return this.createnewaccount;
+    }
+
+    public void login(ActionEvent ae, Vector<Seller> listOfSellers, Vector<Buyer> listOfBuyers, Vector<Employee> listOfEmployees) {
         if (!logedin) {
             if (ae.getSource() == choice3) {
                 this.add(employeenb);
@@ -151,36 +150,57 @@ public class MyLogIn extends JPanel implements ActionListener {
 
             if (ae.getSource() == enter) {
                 if (employeeuser) {
-                    Employee user = this.listOfEmployees.elementAt(0);
-                    if ((usermail.getText().equals(user.getEmail())) && (userpassword.getText().equals(user.getPassword())) && (useremployeenb.getText().equals(user.getEmployeeNb()))) {
-                        JOptionPane.showMessageDialog(null, "Successfully loged in. welcome " + user.getFirstName(), "SUCCESS", JOptionPane.PLAIN_MESSAGE);
-                        this.logedin = true;
-                        this.setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Could not log in. Email or password may not be correct.", "FAILED", JOptionPane.WARNING_MESSAGE);
-                        this.logedin = false;
+                    for (int i = 0; i < listOfEmployees.size(); i++) {
+                        Employee user = listOfEmployees.elementAt(i);
+                        if ((usermail.getText().equals(user.getEmail())) && (userpassword.getText().equals(user.getPassword())) && (useremployeenb.getText().equals(user.getEmployeeNb()))) {
+                            JOptionPane.showMessageDialog(null, "Successfully loged in. welcome " + user.getFirstName(), "SUCCESS", JOptionPane.PLAIN_MESSAGE);
+                            this.logedin = true;
+                            this.setVisible(false);
+                        } else {
+                            this.logedin = false;
+                        }
                     }
+                    if (!this.logedin)
+                    {
+                         JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
+                    }
+
                 } else if (selleruser) {
-                    Seller user = this.listOfSellers.elementAt(0);
-                    if ((usermail.getText().equals(user.getEmail())) && (userpassword.getText().equals(user.getPassword()))) {
-                        JOptionPane.showMessageDialog(null, "Successfully loged in. welcome " + user.getFirstName(), "SUCCESS", JOptionPane.PLAIN_MESSAGE);
-                        this.logedin = true;
-                        this.setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Could not log in. Email or password may not be correct.", "FAILED", JOptionPane.WARNING_MESSAGE);
-                        this.logedin = false;
+                    for (int i = 0; i < listOfSellers.size(); i++) {
+                        Seller user = listOfSellers.elementAt(i);
+                        if ((usermail.getText().equals(user.getEmail())) && (userpassword.getText().equals(user.getPassword()))) {
+                            JOptionPane.showMessageDialog(null, "Successfully loged in. welcome " + user.getFirstName(), "SUCCESS", JOptionPane.PLAIN_MESSAGE);
+                            this.logedin = true;
+                            this.setVisible(false);
+                        } else {
+
+                            this.logedin = false;
+                        }
+                    }
+                    if (!this.logedin)
+                    {
+                         JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (buyeruser) {
-                    Buyer user = this.listOfBuyers.elementAt(0);
-                    if ((usermail.getText().equals(user.getEmail())) && (userpassword.getText().equals(user.getPassword()))) {
-                        JOptionPane.showMessageDialog(null, "Successfully loged in. welcome " + user.getFirstName(), "SUCCESS", JOptionPane.PLAIN_MESSAGE);
-                        this.logedin = true;
-                        this.setVisible(false);
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Could not log in. Email or password may not be correct.", "FAILED", JOptionPane.WARNING_MESSAGE);
-                        this.logedin = false;
+                    for (int i = 0; i < listOfBuyers.size(); i++) {
+                        Buyer user = listOfBuyers.elementAt(i);
+                        if ((usermail.getText().equals(user.getEmail())) && (userpassword.getText().equals(user.getPassword()))) {
+                            JOptionPane.showMessageDialog(null, "Successfully loged in. welcome " + user.getFirstName(), "SUCCESS", JOptionPane.PLAIN_MESSAGE);
+                            this.logedin = true;
+                            this.setVisible(false);
+                        } else {
+
+                            this.logedin = false;
+                        }
                     }
+                    if (!this.logedin)
+                    {
+                        JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
+                    }
+                } else if (ae.getSource() == newaccount) {
+                    this.createnewaccount = true;
                 }
+                
             }
         }
     }

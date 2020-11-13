@@ -58,5 +58,5 @@ public abstract class User {
     public void setBirthDate(GregorianCalendar birthdate) {
         this.birthdate = birthdate;
     }
-
+public abstract void showInfos();
 }

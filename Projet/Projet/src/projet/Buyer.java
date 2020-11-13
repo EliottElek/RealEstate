@@ -17,4 +17,13 @@ public class Buyer extends User {
         super(firstname, lastname, birthdate, adress, mail);
     }
 
+    @Override
+   public void showInfos() {
+        System.out.println("firstname : "+this.firstname);
+        System.out.println("lastname : "+this.lastname);
+        System.out.println("adress : "+this.adress);
+        System.out.println("email : "+this.mail);
+        System.out.println("birthdate : " + this.birthdate.get(this.birthdate.DAY_OF_MONTH) + "/" + this.birthdate.get(this.birthdate.MONTH) + "/" + this.birthdate.get(this.birthdate.YEAR));
+    }
+
 }
