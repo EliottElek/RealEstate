@@ -26,23 +26,36 @@ public abstract class User {
         this.password = password;
     }
 
-    void setFirstName(String firstname) {
+    public void setFirstName(String firstname) {
         this.firstname = firstname;
     }
+    public String getFirstName()
+    {
+        return this.firstname;
+    }
 
-    void setLastName(String lastname) {
+    public void setLastName(String lastname) {
         this.lastname = lastname;
     }
 
-    void setEmail(String mail) {
+    public void setEmail(String mail) {
         this.mail = mail;
     }
 
-    void setAdress(String adress) {
+    public String getEmail()
+    {
+        return this.mail;
+    }
+    public String getPassword()
+    {
+        return this.password;
+    }
+
+   public void setAdress(String adress) {
         this.adress = adress;
     }
 
-    void setBirthDate(GregorianCalendar birthdate) {
+    public void setBirthDate(GregorianCalendar birthdate) {
         this.birthdate = birthdate;
     }
 
