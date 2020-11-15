@@ -15,8 +15,8 @@ import javax.swing.JPanel;
 public class Projet {
 
     public static void main(String[] args) {
-       new MyMainInterface();
-       
+        new MyInterface();
+
     }
 
 }

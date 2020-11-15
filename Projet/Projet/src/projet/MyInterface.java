@@ -1,28 +1,27 @@
 package projet;
 
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
-public class MyMainInterface extends JFrame implements ActionListener {
+public class MyInterface extends JFrame implements ActionListener,ChangeListener {
 
     MyLogIn login = new MyLogIn();
     NewAccount newaccount = new NewAccount();
+    BuyerInterface buyerinterface = new BuyerInterface();
     Vector<Seller> listOfSellers = new Vector();
     Vector<Buyer> listOfBuyers = new Vector();
     Vector<Employee> listOfEmployees = new Vector();
 
-    MyMainInterface() {
+    MyInterface() {
         this.setSize(900, 600);
         this.setTitle("Estate Manager");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
         this.setResizable(true);
-        System.out.println("etat" + login.createNewAccount());
         //adding actionlisteners to all buttons from MyLogIn panel
         login.newaccount.addActionListener(this);
         login.enter.addActionListener(this);
@@ -45,12 +44,14 @@ public class MyMainInterface extends JFrame implements ActionListener {
         newaccount.choice2.addActionListener(this);
         newaccount.choice3.addActionListener(this);
         newaccount.back.addActionListener(this);
-
-        this.add(login);
+        buyerinterface.search.addActionListener(this);
+        //addibg actionlisteners to all button from BuyerInterface panel
+        buyerinterface.price.addChangeListener(this);
+        this.add(buyerinterface);
     }
 
-    @Override
     public void actionPerformed(ActionEvent ae) {
+        
         login.login(ae, listOfSellers, listOfBuyers, listOfEmployees);
         newaccount.createAccount(ae, listOfSellers, listOfBuyers, listOfEmployees);
         if (ae.getSource() == login.newaccount) {
@@ -61,7 +62,24 @@ public class MyMainInterface extends JFrame implements ActionListener {
             setContentPane(login);
             invalidate();
             validate();
+        } else if ((ae.getSource() == login.enter)&&(login.logedin)) {
+            setContentPane(buyerinterface);
+            invalidate();
+            validate();
         }
+        else if (ae.getSource() == buyerinterface.search) {
+            setContentPane(login);
+            invalidate();
+            validate();
+        }
+
     }
+
+    @Override
+    public void stateChanged(ChangeEvent ce) {
+        buyerinterface.BuyerResearch(ce);
+    }
+
+  
 
 }

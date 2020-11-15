@@ -7,7 +7,6 @@ package projet;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 import javax.swing.ButtonGroup;
@@ -25,7 +24,6 @@ import javax.swing.JTextField;
  * @author eliot
  */
 public class NewAccount extends JPanel {
-
     boolean iscreated = false;
     boolean iscomplete = false;
     boolean newbuyer = false;
@@ -171,6 +169,7 @@ public class NewAccount extends JPanel {
         if (ae.getSource() == choice3) {
             this.add(number);
             this.add(newnumber);
+             JOptionPane.showMessageDialog(null, "You must have an employee number to create an account. This number is given by you superior.", "Employee account", JOptionPane.INFORMATION_MESSAGE);
             newemployee = true;
             newbuyer = false;
             newseller = false;
@@ -247,13 +246,10 @@ public class NewAccount extends JPanel {
         if (ae.getSource() == createaccount) {
             if (newseller) {
                 String day = (String) birthday.getSelectedItem();
-                System.out.println("day :" + day);
                 d = Integer.parseInt(day);
                 String month = (String) birthmonth.getSelectedItem();
-                System.out.println("month :" + month);
                 m = Integer.parseInt(month);
                 String year = (String) birthyear.getSelectedItem();
-                System.out.println("year :" + year);
                 y = Integer.parseInt(year);
                 GregorianCalendar date = new GregorianCalendar(y, m, d);
                 System.out.println("new seller :");
@@ -264,13 +260,10 @@ public class NewAccount extends JPanel {
                 listOfSellers.add(seller);
             } else if (newbuyer) {
                 String day = (String) birthday.getSelectedItem();
-                System.out.println("day :" + day);
                 d = Integer.parseInt(day);
                 String month = (String) birthmonth.getSelectedItem();
-                System.out.println("month :" + month);
                 m = Integer.parseInt(month);
                 String year = (String) birthyear.getSelectedItem();
-                System.out.println("year :" + year);
                 y = Integer.parseInt(year);
                 GregorianCalendar date = new GregorianCalendar(y, m, d);
                 System.out.println("new buyer :");
@@ -281,13 +274,10 @@ public class NewAccount extends JPanel {
                 listOfBuyers.add(buyer);
             } else if (newemployee) {
                 String day = (String) birthday.getSelectedItem();
-                System.out.println("day :" + day);
                 d = Integer.parseInt(day);
                 String month = (String) birthmonth.getSelectedItem();
-                System.out.println("month :" + month);
                 m = Integer.parseInt(month);
                 String year = (String) birthyear.getSelectedItem();
-                System.out.println("year :" + year);
                 y = Integer.parseInt(year);
                 GregorianCalendar date = new GregorianCalendar(y, m, d);
                 System.out.println("new employee :");
@@ -300,7 +290,7 @@ public class NewAccount extends JPanel {
             }
         }
         if (iscreated) {
-            JOptionPane.showMessageDialog(null, "your account has uccessfully been created ", "Account created", JOptionPane.PLAIN_MESSAGE);
+            JOptionPane.showMessageDialog(null, "your account has successfully been created ", "Account created", JOptionPane.PLAIN_MESSAGE);
             iscreated = false;
         }
 

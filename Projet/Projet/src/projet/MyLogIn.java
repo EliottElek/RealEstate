@@ -50,14 +50,14 @@ public class MyLogIn extends JPanel {
     boolean selleruser = false;
 
     MyLogIn() {
-        Font font = new Font("Consolas", Font.PLAIN, 30);
+        Font font = new Font("Consolas", Font.ITALIC, 30);
         group = new ButtonGroup();
         choice1 = new JRadioButton("Seller");
         choice2 = new JRadioButton("Buyer");
         choice3 = new JRadioButton("Employee");
-        choice1.setBounds(260, 10, 400, 30);
-        choice2.setBounds(260, 60, 400, 30);
-        choice3.setBounds(260, 110, 400, 30);
+        choice1.setBounds(380, 30, 400, 30);
+        choice2.setBounds(380, 90, 400, 30);
+        choice3.setBounds(380, 140, 400, 30);
         choice1.setFont(font);
         choice2.setFont(font);
         choice3.setFont(font);
@@ -88,10 +88,6 @@ public class MyLogIn extends JPanel {
         employeenb.setFont(new Font("Consolas", Font.PLAIN, 18));
         mail.setBounds(160, 190, 300, 50);
         password.setBounds(140, 241, 300, 50);
-        GregorianCalendar date = new GregorianCalendar();
-        date.set(GregorianCalendar.YEAR, 1999);
-        date.set(GregorianCalendar.MONTH, 5);
-        date.set(GregorianCalendar.DAY_OF_MONTH, 29);
         this.setLayout(null);
         enter = new JButton("login");
         newaccount = new JButton("new account");
@@ -160,9 +156,8 @@ public class MyLogIn extends JPanel {
                             this.logedin = false;
                         }
                     }
-                    if (!this.logedin)
-                    {
-                         JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
+                    if (!this.logedin) {
+                        JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
                     }
 
                 } else if (selleruser) {
@@ -177,9 +172,8 @@ public class MyLogIn extends JPanel {
                             this.logedin = false;
                         }
                     }
-                    if (!this.logedin)
-                    {
-                         JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
+                    if (!this.logedin) {
+                        JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (buyeruser) {
                     for (int i = 0; i < listOfBuyers.size(); i++) {
@@ -193,14 +187,13 @@ public class MyLogIn extends JPanel {
                             this.logedin = false;
                         }
                     }
-                    if (!this.logedin)
-                    {
+                    if (!this.logedin) {
                         JOptionPane.showMessageDialog(null, "Cannot find account.", "Account created", JOptionPane.WARNING_MESSAGE);
                     }
                 } else if (ae.getSource() == newaccount) {
                     this.createnewaccount = true;
                 }
-                
+
             }
         }
     }
