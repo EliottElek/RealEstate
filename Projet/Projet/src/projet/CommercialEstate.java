@@ -5,14 +5,16 @@
  */
 package projet;
 
+import java.io.IOException;
+
 /**
  *
  * @author eliot
  */
 public abstract class CommercialEstate extends Estate{
 
-    public CommercialEstate(String location, String adress, double price, int size, String description) {
-        super(location, adress, price, size, description);
+    public CommercialEstate(String location, String adress, double price, int area, String description, String[] imagesnames,int factor) throws IOException {
+        super(location, adress, price, area, description,imagesnames,factor);
     }
     
 }

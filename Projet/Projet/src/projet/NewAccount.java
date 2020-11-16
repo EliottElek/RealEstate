@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.util.GregorianCalendar;
 import java.util.Vector;
 import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -24,6 +25,8 @@ import javax.swing.JTextField;
  * @author eliot
  */
 public class NewAccount extends JPanel {
+
+    int factor = 1;
     boolean iscreated = false;
     boolean iscomplete = false;
     boolean newbuyer = false;
@@ -56,8 +59,12 @@ public class NewAccount extends JPanel {
     JRadioButton choice3;
     ButtonGroup group;
 
-    public NewAccount() {
-        this.setLayout(null);
+    public NewAccount(int factor) {
+        this.factor = factor;
+        this.setSize(1000 * this.factor, 600 * this.factor);
+        GroupLayout groupl = new GroupLayout(this);
+        this.setLayout(groupl);
+        groupl.setAutoCreateContainerGaps(true);
         days = new String[31];
         months = new String[13];
         years = new String[101];
@@ -72,7 +79,7 @@ public class NewAccount extends JPanel {
             years[i] = Integer.toString(2020 - i);
         }
         //creation of the text fields for user's info prompting
-        Font font = new Font("Consolas", Font.PLAIN, 18);
+        Font font = new Font("Consolas", Font.PLAIN, 18 * factor);
         newfirstname = new JTextField();
         newlastname = new JTextField();
         newmail = new JTextField();
@@ -109,25 +116,27 @@ public class NewAccount extends JPanel {
         choice1.setFont(font);
         choice2.setFont(font);
         choice3.setFont(font);
+        createaccount.setFont(font);
+        back.setFont(font);
         //setting the bounds
-        firstname.setBounds(121, 60, 400, 30);
-        lastname.setBounds(131, 100, 400, 30);
-        mail.setBounds(171, 140, 400, 30);
-        password.setBounds(131, 180, 400, 30);
-        adress.setBounds(151, 220, 400, 30);
-        birthdate.setBounds(121, 265, 400, 30);
-        number.setBounds(61, 320, 400, 30);
-        newfirstname.setBounds(240, 60, 400, 30);
-        newlastname.setBounds(240, 100, 400, 30);
-        newmail.setBounds(240, 140, 400, 30);
-        newpassword.setBounds(240, 180, 400, 30);
-        newadress.setBounds(240, 220, 400, 30);
-        newnumber.setBounds(240, 320, 400, 30);
-        createaccount.setBounds(310, 400, 200, 50);
-        back.setBounds(310, 460, 200, 50);
-        choice1.setBounds(150, 20, 100, 30);
-        choice2.setBounds(330, 20, 100, 30);
-        choice3.setBounds(510, 20, 200, 30);
+        firstname.setBounds(121 * factor, 60 * factor, 400 * factor, 30 * factor);
+        lastname.setBounds(131 * factor, 100 * factor, 400 * factor, 30 * factor);
+        mail.setBounds(171 * factor, 140 * factor, 400 * factor, 30 * factor);
+        password.setBounds(131 * factor, 180 * factor, 400 * factor, 30 * factor);
+        adress.setBounds(151 * factor, 220 * factor, 400 * factor, 30 * factor);
+        birthdate.setBounds(121 * factor, 265 * factor, 400 * factor, 30 * factor);
+        number.setBounds(61 * factor, 320 * factor, 400 * factor, 30 * factor);
+        newfirstname.setBounds(240 * factor, 60 * factor, 400 * factor, 30 * factor);
+        newlastname.setBounds(240 * factor, 100 * factor, 400 * factor, 30 * factor);
+        newmail.setBounds(240 * factor, 140 * factor, 400 * factor, 30 * factor);
+        newpassword.setBounds(240 * factor, 180 * factor, 400 * factor, 30 * factor);
+        newadress.setBounds(240 * factor, 220 * factor, 400 * factor, 30 * factor);
+        newnumber.setBounds(240 * factor, 320 * factor, 400 * factor, 30 * factor);
+        createaccount.setBounds(310 * factor, 365 * factor, 200 * factor, 50 * factor);
+        back.setBounds(310 * factor, 420 * factor, 200 * factor, 50 * factor);
+        choice1.setBounds(150 * factor, 20 * factor, 100 * factor, 30 * factor);
+        choice2.setBounds(330 * factor, 20 * factor, 100 * factor, 30 * factor);
+        choice3.setBounds(510 * factor, 20 * factor, 200 * factor, 30 * factor);
         createaccount.setFocusable(false);
         back.setFocusable(false);
         choice1.setFocusable(false);
@@ -138,9 +147,12 @@ public class NewAccount extends JPanel {
         birthmonth = new JComboBox(months);
         birthyear = new JComboBox(years);
         //setting combo boxes bounds
-        birthday.setBounds(260, 260, 70, 35);
-        birthmonth.setBounds(330, 260, 80, 35);
-        birthyear.setBounds(410, 260, 100, 35);
+        birthday.setBounds(260 * factor, 260 * factor, 70 * factor, 35 * factor);
+        birthmonth.setBounds(330 * factor, 260 * factor, 80 * factor, 35 * factor);
+        birthyear.setBounds(410 * factor, 260 * factor, 100 * factor, 35 * factor);
+        birthday.setFont(font);
+        birthmonth.setFont(font);
+        birthyear.setFont(font);
         //adding all components
         this.add(firstname);
         this.add(newfirstname);
@@ -169,7 +181,7 @@ public class NewAccount extends JPanel {
         if (ae.getSource() == choice3) {
             this.add(number);
             this.add(newnumber);
-             JOptionPane.showMessageDialog(null, "You must have an employee number to create an account. This number is given by you superior.", "Employee account", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "You must have an employee number to create an account. This number is given by your superior.", "Employee account", JOptionPane.INFORMATION_MESSAGE);
             newemployee = true;
             newbuyer = false;
             newseller = false;

@@ -2,26 +2,39 @@ package projet;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.Vector;
 import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class MyInterface extends JFrame implements ActionListener,ChangeListener {
+public class MyInterface extends JFrame implements ActionListener, ChangeListener {
 
-    MyLogIn login = new MyLogIn();
-    NewAccount newaccount = new NewAccount();
-    BuyerInterface buyerinterface = new BuyerInterface();
+    MyLogIn login;
+    NewAccount newaccount;
+    ResearchInterface buyerinterface;
+    SellerInterface sellerinterface;
+    BuyerChoiceInterface choiceinterface;
     Vector<Seller> listOfSellers = new Vector();
     Vector<Buyer> listOfBuyers = new Vector();
     Vector<Employee> listOfEmployees = new Vector();
 
-    MyInterface() {
-        this.setSize(900, 600);
+    MyInterface(int factor, int w, int h) throws IOException {
+        this.setResizable(false);
+        login = new MyLogIn(factor);
+        newaccount = new NewAccount(factor);
+        buyerinterface = new ResearchInterface(factor);
+        Estate[] propertysample = new Estate[4];
+        for (int i = 0; i < 4; i++) {
+             String[] image = {"image"+(i+1)+".png"};
+            propertysample[i] = new ResidentialEstate("city " + (i + 1), "adress " + (i + 1), (i+1) * 300000, (i+1) * 50, "descritpion " + (i + 1), image,factor);
+        }
+        sellerinterface = new SellerInterface(factor);
+        choiceinterface = new BuyerChoiceInterface(propertysample,factor);
+        this.setSize(w, h);
         this.setTitle("Estate Manager");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-        this.setResizable(true);
         //adding actionlisteners to all buttons from MyLogIn panel
         login.newaccount.addActionListener(this);
         login.enter.addActionListener(this);
@@ -45,13 +58,23 @@ public class MyInterface extends JFrame implements ActionListener,ChangeListener
         newaccount.choice3.addActionListener(this);
         newaccount.back.addActionListener(this);
         buyerinterface.search.addActionListener(this);
-        //addibg actionlisteners to all button from BuyerInterface panel
+        sellerinterface.add.addActionListener(this);
+        //adding actionlisteners to all button from BuyerInterface panel
         buyerinterface.price.addChangeListener(this);
-        this.add(buyerinterface);
+        buyerinterface.minarea.addChangeListener(this);
+        buyerinterface.maxarea.addChangeListener(this);
+        //addibg actionlisteners to all button from SellerInterface panel
+        sellerinterface.add.addActionListener(this);
+        sellerinterface.locate.addActionListener(this);
+        sellerinterface.proximitychosen.addActionListener(this);
+        sellerinterface.nbroomschosen.addActionListener(this);
+        sellerinterface.nbbthroomschosen.addActionListener(this);
+        this.add(login);
     }
 
+    @Override
     public void actionPerformed(ActionEvent ae) {
-        
+        sellerinterface.SellerAddProperty(ae);
         login.login(ae, listOfSellers, listOfBuyers, listOfEmployees);
         newaccount.createAccount(ae, listOfSellers, listOfBuyers, listOfEmployees);
         if (ae.getSource() == login.newaccount) {
@@ -62,13 +85,16 @@ public class MyInterface extends JFrame implements ActionListener,ChangeListener
             setContentPane(login);
             invalidate();
             validate();
-        } else if ((ae.getSource() == login.enter)&&(login.logedin)) {
-            setContentPane(buyerinterface);
+        } else if ((ae.getSource() == login.enter)) {//&&(login.logedin)) {
+            if (login.buyeruser) {
+                setContentPane(buyerinterface);
+            } else if (login.selleruser) {
+                setContentPane(sellerinterface);
+            }
             invalidate();
             validate();
-        }
-        else if (ae.getSource() == buyerinterface.search) {
-            setContentPane(login);
+        } else if (ae.getSource() == buyerinterface.search) {
+            setContentPane(choiceinterface);
             invalidate();
             validate();
         }
@@ -79,7 +105,5 @@ public class MyInterface extends JFrame implements ActionListener,ChangeListener
     public void stateChanged(ChangeEvent ce) {
         buyerinterface.BuyerResearch(ce);
     }
-
-  
 
 }

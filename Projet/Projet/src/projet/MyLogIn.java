@@ -30,6 +30,7 @@ import javax.swing.JTextField;
  */
 public class MyLogIn extends JPanel {
 
+    int factor = 1;
     JRadioButton choice1;
     JRadioButton choice2;
     JRadioButton choice3;
@@ -49,15 +50,17 @@ public class MyLogIn extends JPanel {
     boolean buyeruser = false;
     boolean selleruser = false;
 
-    MyLogIn() {
-        Font font = new Font("Consolas", Font.ITALIC, 30);
+    MyLogIn(int factor) {
+        this.setSize(1000 * this.factor, 600 * this.factor);
+        this.factor = factor;
+        Font font = new Font("Consolas", Font.ITALIC, 30 * factor);
         group = new ButtonGroup();
         choice1 = new JRadioButton("Seller");
         choice2 = new JRadioButton("Buyer");
         choice3 = new JRadioButton("Employee");
-        choice1.setBounds(380, 30, 400, 30);
-        choice2.setBounds(380, 90, 400, 30);
-        choice3.setBounds(380, 140, 400, 30);
+        choice1.setBounds(380 * factor, 30 * factor, 400 * factor, 30 * factor);
+        choice2.setBounds(380 * factor, 90 * factor, 400 * factor, 30 * factor);
+        choice3.setBounds(380 * factor, 140 * factor, 400 * factor, 30 * factor);
         choice1.setFont(font);
         choice2.setFont(font);
         choice3.setFont(font);
@@ -77,17 +80,17 @@ public class MyLogIn extends JPanel {
          userpassword.addActionListener(this);
          usermail.addActionListener(this);
          */
-        usermail.setBounds(260, 200, 400, 30);
-        userpassword.setBounds(260, 250, 400, 30);
-        employeenb.setBounds(70, 140, 300, 50);
-        useremployeenb.setBounds(260, 150, 400, 30);
-        userpassword.setFont(new Font("Consolas", Font.PLAIN, 18));
-        usermail.setFont(new Font("Consolas", Font.PLAIN, 18));
-        mail.setFont(new Font("Consolas", Font.PLAIN, 18));
-        password.setFont(new Font("Consolas", Font.PLAIN, 18));
-        employeenb.setFont(new Font("Consolas", Font.PLAIN, 18));
-        mail.setBounds(160, 190, 300, 50);
-        password.setBounds(140, 241, 300, 50);
+        usermail.setBounds(260 * factor, 200 * factor, 400 * factor, 30 * factor);
+        userpassword.setBounds(260 * factor, 250 * factor, 400 * factor, 30 * factor);
+        employeenb.setBounds(70 * factor, 140 * factor, 300 * factor, 50 * factor);
+        useremployeenb.setBounds(260 * factor, 150 * factor, 400 * factor, 30 * factor);
+        userpassword.setFont(new Font("Consolas", Font.PLAIN, 18 * factor));
+        usermail.setFont(new Font("Consolas", Font.PLAIN, 18 * factor));
+        mail.setFont(new Font("Consolas", Font.PLAIN, 18 * factor));
+        password.setFont(new Font("Consolas", Font.PLAIN, 18 * factor));
+        employeenb.setFont(new Font("Consolas", Font.PLAIN, 18 * factor));
+        mail.setBounds(160 * factor, 190 * factor, 300 * factor, 50 * factor);
+        password.setBounds(140 * factor, 241 * factor, 300 * factor, 50 * factor);
         this.setLayout(null);
         enter = new JButton("login");
         newaccount = new JButton("new account");
@@ -96,8 +99,8 @@ public class MyLogIn extends JPanel {
         enter.setFocusable(false);
         newaccount.setFocusable(false);
         //enter.setSize(100, 30);
-        enter.setBounds(310, 300, 300, 50);
-        newaccount.setBounds(310, 370, 300, 50);
+        enter.setBounds(310 * factor, 300 * factor, 300 * factor, 50 * factor);
+        newaccount.setBounds(310 * factor, 370 * factor, 300 * factor, 50 * factor);
         this.add(choice1);
         this.add(choice2);
         this.add(choice3);
