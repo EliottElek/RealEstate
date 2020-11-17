@@ -5,8 +5,11 @@
  */
 package projet;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -34,6 +37,17 @@ import static projet.BuyerConstInterface.typesrenovation;
 public class SellerInterface extends JPanel implements SellerConstInterface {
 
     int factor = 1;
+    JPanel PANEL1;
+    JPanel PANEL2;
+    JPanel PANEL3;
+    JPanel PANEL4;
+    JPanel PANEL5;
+    JPanel PANEL6;
+    JPanel PANEL7;
+    JPanel PANEL8;
+    JPanel PANEL9;
+    JPanel PANEL10;
+    JPanel PANEL11;
     JLabel location;
     JLabel typeofproperty;
     JLabel pricerange;
@@ -53,18 +67,59 @@ public class SellerInterface extends JPanel implements SellerConstInterface {
     JTextField price;
     JTextField description;
     JButton add;
+    JButton back;
 
     SellerInterface(int factor) {
-        JScrollPane scroll = new JScrollPane();
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        this.setSize(1000*this.factor,600*this.factor);
+        this.setLayout(new BorderLayout(10, 10));
+        PANEL1 = new JPanel();
+        PANEL2 = new JPanel();
+        PANEL3 = new JPanel();
+        PANEL4 = new JPanel();
+        PANEL5 = new JPanel();
+        PANEL6 = new JPanel();
+        PANEL7 = new JPanel();
+        PANEL8 = new JPanel();
+        PANEL9 = new JPanel();
+        PANEL10 = new JPanel();
+        PANEL11 = new JPanel();
+        PANEL1.setPreferredSize(new Dimension(200, 100));
+        PANEL2.setPreferredSize(new Dimension(200, 100));
+        PANEL3.setPreferredSize(new Dimension(200, 100));
+        PANEL4.setPreferredSize(new Dimension(200, 100));
+        PANEL5.setPreferredSize(new Dimension(200, 100));
+        PANEL10.setPreferredSize(new Dimension(200, 100));
+        PANEL11.setPreferredSize(new Dimension(200, 3000));
+        PANEL1.setBackground(Color.gray);
+        PANEL2.setBackground(Color.gray);
+        PANEL3.setBackground(Color.gray);
+        PANEL4.setBackground(Color.gray);
+        PANEL5.setBackground(Color.lightGray);
+        PANEL6.setBackground(Color.gray);
+        PANEL7.setBackground(Color.lightGray);
+        PANEL8.setBackground(Color.orange);
+        PANEL9.setBackground(Color.gray);
+        PANEL11.setBackground(Color.lightGray);
+        PANEL1.setLayout(new BorderLayout());
+        PANEL10.setLayout(new BorderLayout());
+        //PANEL11.setLayout(new GridLayout(properties.length, 2));
+        PANEL5.setLayout(new GridLayout(1, 2));
+        PANEL6.setLayout(new GridLayout(2, 1));
+        PANEL7.setLayout(new GridLayout(14, 2));
+        PANEL8.setLayout(new GridLayout(7, 1));
+        PANEL9.setLayout(new GridLayout(7, 2));
+        PANEL1.add(PANEL10, BorderLayout.EAST);
+        //adding PANEL6 and PANEL7 to PANEL5
+        PANEL5.add(PANEL6);
+        PANEL5.add(PANEL7);
+        //adding PANELS 8 and 9 to PANEL6
+        //add everything to the PANELS
+        PANEL6.add(PANEL8);
+        PANEL6.add(PANEL9);
+        this.setSize(1000 * this.factor, 600 * this.factor);
 // Add Textarea in to middle panel
-        this.add(scroll);
         this.factor = factor;
         //creating default font
         Font font = new Font("Consolas", Font.PLAIN, 18 * factor);
-        //setting the layout
-        this.setLayout(null);
         //creating labels
         location = new JLabel("Location");
         typeofproperty = new JLabel("property type");
@@ -85,37 +140,12 @@ public class SellerInterface extends JPanel implements SellerConstInterface {
         state = new JComboBox(propertystate);
         //creating buttons
         add = new JButton("ADD PROPERTY");
+        back = new JButton("back");
         //creating texfields
         price = new JTextField();
         description = new JTextField();
         //setting buttons to not focudable
         add.setFocusable(false);
-        //creating the button group
-        //setting all bounds
-        location.setBounds(50 * factor, 20 * factor, 300 * factor, 30 * factor);
-        locate.setBounds(50 * factor, 55 * factor, 300 * factor, 30 * factor);
-        typeofproperty.setBounds(50 * factor, 100 * factor, 300 * factor, 30 * factor);
-        pricerange.setBounds(50 * factor, 180 * factor, 150 * factor, 30 * factor);
-        proximity.setBounds(50 * factor, 260 * factor, 300 * factor, 30 * factor);
-        nbrooms.setBounds(420 * factor, 20 * factor, 300 * factor, 30 * factor);
-        nbbthrooms.setBounds(420 * factor, 100 * factor, 300 * factor, 30 * factor);
-        typechosen.setBounds(50 * factor, 135 * factor, 300 * factor, 30 * factor);
-        proximitychosen.setBounds(50 * factor, 295 * factor, 300 * factor, 30 * factor);
-        nbroomschosen.setBounds(420 * factor, 55 * factor, 90 * factor, 30 * factor);
-        nbbthroomschosen.setBounds(420 * factor, 135 * factor, 90 * factor, 30 * factor);
-        price.setBounds(50 * factor, 215 * factor, 300 * factor, 30 * factor);
-        renovate.setBounds(400 * factor, 180 * factor, 300 * factor, 30 * factor);
-        renovation.setBounds(400 * factor, 215 * factor, 300 * factor, 30 * factor);
-        stateofproperty.setBounds(400 * factor, 260 * factor, 300 * factor, 30 * factor);
-        state.setBounds(400 * factor, 295 * factor, 300 * factor, 30 * factor);
-        if (factor == 1) {
-            add.setBounds(300 * factor, 465 * factor, 200 * factor, 60 * factor);
-        } else if (factor == 2) {
-            add.setBounds(730 * factor, 370 * factor, 200 * factor, 70 * factor);
-        }
-        description.setBounds(50 * factor, 370 * factor, 660 * factor, 70 * factor);
-        desc.setBounds(50 * factor, 320 * factor, 200 * factor, 60 * factor);
-
         //setting initial values to sliders
         //setting all fonts
         locate.setFont(font);
@@ -139,27 +169,13 @@ public class SellerInterface extends JPanel implements SellerConstInterface {
         add.setFont(font);
         //disable add button
         add.setEnabled(false);
-        //add everything to the panel
-        this.add(typeofproperty);
-        this.add(pricerange);
-        this.add(proximity);
-        this.add(nbrooms);
-        this.add(nbbthrooms);
-        this.add(typechosen);
-        this.add(proximitychosen);
-        this.add(nbroomschosen);
-        this.add(nbbthroomschosen);
-        this.add(typechosen);
-        this.add(price);
-        this.add(renovate);
-        this.add(renovation);
-        this.add(state);
-        this.add(stateofproperty);
-        this.add(add);
-        this.add(locate);
-        this.add(location);
-        this.add(desc);
-        this.add(description);
+        this.add(PANEL1, BorderLayout.NORTH);
+        this.add(PANEL2, BorderLayout.SOUTH);
+        this.add(PANEL3, BorderLayout.WEST);
+        this.add(PANEL4, BorderLayout.EAST);
+        this.add(PANEL5, BorderLayout.CENTER);
+        PANEL2.add(back,  BorderLayout.WEST);
+        this.setVisible(true);
 
     }
 

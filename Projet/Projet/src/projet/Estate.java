@@ -2,6 +2,7 @@ package projet;
 
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
@@ -9,16 +10,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public abstract class Estate {
 
     BufferedImage[] images;
     JLabel[] ImagesToShow;
     int imageindex;
-    int x = 20;
-    int y = 20;
-    int w = 200;
-    int h = 200;
     private String location;
     private String adress;
     private double price;
@@ -27,6 +26,9 @@ public abstract class Estate {
     private String description;
     JButton right;
     JButton left;
+    JPanel infos;
+    JPanel imgs;
+    JScrollPane imagesScroller;
 
     public Estate(String location, String adress, double price, int area, String description, String[] imagesnames, int factor) throws IOException {
         this.location = location;
@@ -41,27 +43,63 @@ public abstract class Estate {
             this.images[i] = ImageIO.read(this.getClass().getResource(imagesnames[i]));
             ImagesToShow[i] = new JLabel(new ImageIcon(this.images[i]));
         }
-        right = new JButton("next");
-        left = new JButton("prev");
+
+        infos = new JPanel();
+        imgs = new JPanel();
+        this.setInfos();
     }
 
-    public void addImageOnPanel(JPanel panel, int i) {
-        panel.add(this.ImagesToShow[i]);
+    public void setInfos() {
+        infos.setLayout(new GridLayout(6, 1));
+        Font font = new Font("Consolas", Font.PLAIN, 24 * this.factor);
+        JLabel location = new JLabel("Location : " + this.location);
+        JLabel adress = new JLabel("adress : " + this.adress);
+        JLabel price = new JLabel("price : " + this.price + "$");
+        JLabel area = new JLabel("area : " + this.area + "m²");
+        JLabel description = new JLabel("description : " + this.description);
+        this.right = new JButton("view next image");
+        this.left = new JButton("view previous image");
+        this.right.setFont(font);
+        this.left.setFont(font);
+        location.setFont(font);
+        adress.setFont(font);
+        price.setFont(font);
+        area.setFont(font);
+        description.setFont(font);
+        infos.add(location);
+        infos.add(adress);
+        infos.add(price);
+        infos.add(area);
+        infos.add(description);
+
+
     }
 
-    public void showImage(JPanel panel, Graphics g, int i, int factor) {
-        Font font = new Font("Consolas", Font.ITALIC, 14 * factor);
-        right = new JButton("next");
-        left = new JButton("prev");
-        //right.setBounds((this.x*factor + this.w*factor) / 2, (this.y + this.h) * factor, 90*factor, 50*factor);
-        left.setBounds((this.x + this.w - 100) / 2 * this.factor, (this.y + this.h) * factor, 90*factor, 50*factor);
-        g.drawImage(this.images[i], this.x * factor, this.y * factor, this.w * factor, this.h * factor, panel);
-        g.setFont(font);
-        g.drawString("location : " + this.location, this.x * factor + this.w * factor + 10, (this.y + 20) * factor);
-        g.drawString("adress : " + this.adress, this.x * factor + this.w * factor + 10, (this.y + 40) * factor);
-        g.drawString("price : " + this.price + "$", this.x * factor + this.w * factor + 10, (this.y + 60) * factor);
-        g.drawString("area : " + this.area + "m²", this.x * factor + this.w * factor + 10, (this.y + 80) * factor);
-        g.drawString("descritpion : " + this.description, this.x * factor + this.w * factor + 10, (this.y + 100) * factor);
+    public void addInfosOnPanel(JPanel panel) {
+        imgs.setLayout(new GridLayout(1,ImagesToShow.length));
+
+        for (int i = 0; i < ImagesToShow.length; i++) {
+            System.out.println(i);
+            imgs.add(ImagesToShow[i]);
+        }
+
+        imagesScroller = new JScrollPane(imgs);
+        imagesScroller.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        imagesScroller.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+        panel.add(imagesScroller);
+        panel.add(infos);
+
+    }
+    public void removeInfos(JPanel panel)
+    {
+        panel.remove(imagesScroller);
+        panel.remove(infos);
+    }
+
+    public void changeImage(JPanel panel) {
+        panel.remove(infos);
+        addInfosOnPanel(panel);
+
     }
 
     public void setAdress(String adress) {
