@@ -3,12 +3,31 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/projet/NewAccount.java</file>
-            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/projet/BuyerInterface.java</file>
-            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/projet/MyLogIn.java</file>
-            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/projet/Estate.java</file>
-            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/projet/SellerInterface.java</file>
-            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/projet/MyInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/SellerDAO.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/MyLogInConstant.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/BuyerInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/Projet.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/User.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/Employee.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/BuyerDAO.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/DAOproperties.txt</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/Seller.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/MyLogIn.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/FirstFrame.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/BuyerConstInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/RealEstate.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/MyProfile.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/MyInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/MyProfileModify.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/Estate.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/CreateInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/Buyer.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/EmployeeDAO.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/SellerConstInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/NewAccount.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/EstateDAO.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/EmployeeInterface.java</file>
+            <file>file:/C:/Users/eliot/ProjetPiscineS2/RealEstate/Projet/Projet/src/GUI/SellerInterface.java</file>
         </group>
     </open-files>
 </project-private>
