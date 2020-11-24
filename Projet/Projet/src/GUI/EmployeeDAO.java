@@ -183,8 +183,8 @@ public class EmployeeDAO {
         return mailok;
     }
 
-    public void modifyEmployeeProfile(User ancientemployee, Employee newemployee) throws SQLException {
-        int id = ancientemployee.getID();
+    public void modifyEmployeeProfile(User newemployee) throws SQLException {
+        int id = newemployee.getID();
         PreparedStatement myStmt;
         myStmt = myConn.prepareStatement("UPDATE `employees` SET `identifier`=?,`firstname`=?,`lastname`=?,`birthdate`=?,`adress`=?,`mail`=? WHERE `identifier` like ?");
         myStmt.setInt(1, id);
@@ -195,8 +195,8 @@ public class EmployeeDAO {
         myStmt.setString(6, newemployee.getEmail());
         myStmt.setInt(7, id);
         myStmt.execute();
-        //JOptionPane.showMessageDialog(null, "New infos have been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
         myStmt.close();
+        JOptionPane.showMessageDialog(null, "New infos have been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
     }
 
     private Employee convertRowToEmployee(ResultSet myRs) throws SQLException {

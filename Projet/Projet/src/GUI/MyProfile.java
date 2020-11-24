@@ -90,6 +90,7 @@ public class MyProfile extends JPanel {
     }
 
     public void ShowInfosOfProfile(User user) {
+        user.updateInfosMyProfile();
         save.setVisible(false);
         delete.setVisible(true);
         seebookings.setVisible(true);
@@ -105,7 +106,7 @@ public class MyProfile extends JPanel {
     }
 
     public void modifyProfile(User user) {
-        this.user = user;
+        //this.user = user;
         save.setVisible(true);
         delete.setVisible(false);
         seebookings.setVisible(false);
@@ -121,72 +122,55 @@ public class MyProfile extends JPanel {
     }
 
     public void removeInfosOfProfile(User user) {
-        PANEL5.remove(user.PANELINFOS);
-        PANEL5.remove(COMMANDPANEL);
-        if (modif = true) {
-            PANEL5.remove(user.PANELMODIFY);
-        }
+        PANEL5.removeAll();
         modif = false;
         repaint();
         invalidate();
         validate();
     }
 
-    public void saveNewBuyer() throws SQLException {
-        buyerdao.modifyBuyerProfile(user, returnBuyerModifiedProfile());
-        user = returnBuyerModifiedProfile();
-        modif = true;
-    }
-
-    public void saveNewSeller(int i) throws SQLException {
-        sellerdao.modifySellerProfile(user, returnSellerModifiedProfile());
-        user = returnSellerModifiedProfile();
-        modif = true;
-        System.out.println("ptn "+i);
-    }
-
-    public void saveNewEmployee() throws SQLException {
-        employeedao.modifyEmployeeProfile(user, returnEmployeeModifiedProfile());
-        user = returnEmployeeModifiedProfile();
-        modif = true;
-    }
-
-    public Buyer returnBuyerModifiedProfile() {
-        Buyer finalbuyer = null;
+    public void BuyerModifiedProfile() throws SQLException {
         String firstname = user.PANELMODIFY.firstname.getText();
         String lastname = user.PANELMODIFY.lastname.getText();
         String adress = user.PANELMODIFY.adress.getText();
         String mail = user.PANELMODIFY.mail.getText();
-        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()) - 1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
-        //date.setDate(Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
-        //date.setMonth(Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()));
-        //date.setYear(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()));
-        finalbuyer = new Buyer(1, firstname, lastname, date, adress, mail);
-        System.out.println("date :" + date);
-        return finalbuyer;
+        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem())-1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
+        this.user.setFirstName(firstname);
+        this.user.setLastName(lastname);
+        this.user.setAdress(adress);
+        this.user.setBirthDate(date);
+        this.user.setEmail(mail);
+        System.out.println("date buyer:" + date);
+        buyerdao.modifyBuyerProfile(this.user);
     }
 
-    public Seller returnSellerModifiedProfile() {
-        Seller finalseller = null;
+    public void SellerModifiedProfile() throws SQLException {
         String firstname = user.PANELMODIFY.firstname.getText();
         String lastname = user.PANELMODIFY.lastname.getText();
         String adress = user.PANELMODIFY.adress.getText();
         String mail = user.PANELMODIFY.mail.getText();
-        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()) - 1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
-        finalseller = new Seller(1, firstname, lastname, date, adress, mail);
-        System.out.println("date :" + date);
-        return finalseller;
+        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem())-1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
+        this.user.setFirstName(firstname);
+        this.user.setLastName(lastname);
+        this.user.setAdress(adress);
+        this.user.setBirthDate(date);
+        this.user.setEmail(mail);
+        System.out.println("date buyer:" + date);
+        sellerdao.modifySellerProfile(this.user);
     }
 
-    public Employee returnEmployeeModifiedProfile() {
-        Employee finalemployee = null;
+    public void EmployeeModifiedProfile() throws SQLException {
         String firstname = user.PANELMODIFY.firstname.getText();
         String lastname = user.PANELMODIFY.lastname.getText();
         String adress = user.PANELMODIFY.adress.getText();
         String mail = user.PANELMODIFY.mail.getText();
-        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()) - 1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
-        System.out.println("date :" + date);
-        finalemployee = new Employee(1, firstname, lastname, date, adress, mail);
-        return finalemployee;
+        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem())-1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
+        this.user.setFirstName(firstname);
+        this.user.setLastName(lastname);
+        this.user.setAdress(adress);
+        this.user.setBirthDate(date);
+        this.user.setEmail(mail);
+        System.out.println("date buyer:" + date);
+        employeedao.modifyEmployeeProfile(this.user);
     }
 }

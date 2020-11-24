@@ -28,21 +28,5 @@ public class Seller extends User {
         System.out.println("email : " + this.mail);
         System.out.println("birthdate : " + this.birthdate.getDate() + "/" + this.birthdate.getMonth() + "/" + this.birthdate.getYear());
     }
-    @Override
-    public JPanel showInfosMyProfile()
-    {
-        PANELINFOS.setLayout(new GridLayout(5,2));
-        PANELINFOS.add(new JLabel("FIRSTNAME"));
-        PANELINFOS.add(new JLabel(this.firstname));
-        PANELINFOS.add(new JLabel("LASTNAME"));
-        PANELINFOS.add(new JLabel(this.lastname));
-        PANELINFOS.add(new JLabel("ADRESS"));
-        PANELINFOS.add(new JLabel(this.adress));
-        PANELINFOS.add(new JLabel("MAIL"));
-        PANELINFOS.add(new JLabel(this.mail));
-        PANELINFOS.add(new JLabel("BIRTHDATE"));
-        PANELINFOS.add(new JLabel(this.birthdate.getDate() + "/" + this.birthdate.getMonth() + "/" + this.birthdate.getYear()));
-        return PANELINFOS;
-
-    }    
+ 
 }

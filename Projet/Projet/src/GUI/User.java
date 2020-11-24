@@ -1,8 +1,10 @@
 package GUI;
 
+import java.awt.GridLayout;
 import java.lang.Object;
 import java.util.Calendar;
 import java.sql.Date;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public abstract class User {
@@ -16,6 +18,11 @@ public abstract class User {
     protected int id;
     JPanel PANELINFOS;
     MyProfileModify PANELMODIFY;
+    JLabel labelfirstname;
+    JLabel labellastname;
+    JLabel labeladress;
+    JLabel labelemail;
+    JLabel labeldate;
 
     public User(int id, String firstname, String lastname, Date birthdate, String adress, String mail) {
         this.id = id;
@@ -27,7 +34,6 @@ public abstract class User {
         PANELINFOS = new JPanel();
         PANELMODIFY = new MyProfileModify(this);
         showInfosMyProfile();
-
     }
 
     public int getID()
@@ -96,5 +102,32 @@ public abstract class User {
 
     public abstract void showInfos();
 
-    public abstract JPanel showInfosMyProfile();
+   public void showInfosMyProfile()
+    {
+        labelfirstname = new JLabel(this.firstname);
+        labellastname = new JLabel(this.lastname);
+        labeladress = new JLabel(this.adress);
+        labelemail = new JLabel(this.mail);
+        labeldate = new JLabel(this.birthdate.toString());
+        PANELINFOS.setLayout(new GridLayout(5,2));
+        PANELINFOS.add(new JLabel("FIRSTNAME"));
+        PANELINFOS.add(labelfirstname);
+        PANELINFOS.add(new JLabel("LASTNAME"));
+        PANELINFOS.add(labellastname);
+        PANELINFOS.add(new JLabel("ADRESS"));
+        PANELINFOS.add(labeladress);
+        PANELINFOS.add(new JLabel("MAIL"));
+        PANELINFOS.add(labelemail);
+        PANELINFOS.add(new JLabel("BIRTHDATE"));
+        PANELINFOS.add(labeldate);
+
+    }    
+     public  void updateInfosMyProfile()
+     {
+         labelfirstname.setText(this.firstname);
+         labellastname.setText(this.lastname);
+         labeladress.setText(this.adress);
+         labeldate.setText(this.birthdate.toString());
+         labelemail.setText(this.mail);
+     }
  }

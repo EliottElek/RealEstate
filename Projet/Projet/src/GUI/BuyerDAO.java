@@ -183,8 +183,8 @@ public class BuyerDAO {
         return checked;
     }
 
-    public void modifyBuyerProfile(User ancientbuyer, Buyer newbuyer) throws SQLException {
-        int id = ancientbuyer.getID();
+    public void modifyBuyerProfile(User newbuyer) throws SQLException {
+        int id = newbuyer.getID();
         try (PreparedStatement myStmt = myConn.prepareStatement("UPDATE `buyers` SET `identifier`=?,`firstname`=?,`lastname`=?,`birthdate`=?,`adress`=?,`mail`=? WHERE `identifier` like ?")) {
             myStmt.setInt(1, id);
             myStmt.setString(2, newbuyer.getFirstName());
@@ -194,7 +194,7 @@ public class BuyerDAO {
             myStmt.setString(6, newbuyer.getEmail());
             myStmt.setInt(7, id);
             myStmt.execute();
-            //JOptionPane.showMessageDialog(null, "New infos have been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "New infos have been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
             myStmt.close();
         }
 

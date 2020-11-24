@@ -26,9 +26,9 @@ public class Employee extends User {
     public Employee(int id, String firstname, String lastname, Date birthdate, String adress, String mail) {
         super(id, firstname, lastname, birthdate, adress, mail);
     }
-    public void setEmployeeNb(int nb)
-    {
-        this.employeenb= nb;
+
+    public void setEmployeeNb(int nb) {
+        this.employeenb = nb;
     }
 
     public int getEmployeeNb() {
@@ -43,26 +43,6 @@ public class Employee extends User {
         System.out.println("email : " + this.mail);
         System.out.println("birthdate : " + this.birthdate.getDate() + "/" + this.birthdate.getMonth() + "/" + this.birthdate.getYear());
         System.out.println("employee number : " + this.employeenb);
-    }
-
-    @Override
-    public JPanel showInfosMyProfile() {
-
-        PANELINFOS.setLayout(new GridLayout(6, 2));
-        PANELINFOS.add(new JLabel("FIRSTNAME"));
-        PANELINFOS.add(new JLabel(this.firstname));
-        PANELINFOS.add(new JLabel("LASTNAME"));
-        PANELINFOS.add(new JLabel(this.lastname));
-        PANELINFOS.add(new JLabel("ADRESS"));
-        PANELINFOS.add(new JLabel(this.adress));
-        PANELINFOS.add(new JLabel("MAIL"));
-        PANELINFOS.add(new JLabel(this.mail));
-        PANELINFOS.add(new JLabel("BIRTHDATE"));
-        PANELINFOS.add(new JLabel(this.birthdate.getDate() + "/" + this.birthdate.getMonth()  + "/" + this.birthdate.getYear()));
-        PANELINFOS.add(new JLabel("NUMBER"));
-        PANELINFOS.add(new JLabel(Integer.toString(this.employeenb)));
-        return PANELINFOS;
-
     }
 
 }

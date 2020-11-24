@@ -32,7 +32,8 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
 
     /**
      *
-     */int i = 0;
+     */
+    int i = 0;
     User actualuser;
     MyLogIn login;
     NewAccount newaccount;
@@ -118,8 +119,6 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
         myprofile.backbutton.addActionListener(this);
         myprofile.modify.addActionListener(this);
         myprofile.save.addActionListener(this);
-        myprofile.save.addActionListener(this);
-        myprofile.save.addActionListener(this);
         this.add(login);
     }
 
@@ -174,11 +173,11 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                 setContentPane(employeeinterface);
             }
             System.out.println("actual ID : " + actualuser.getID());
-            if(!actionput){
+            if (!actionput){
             actualuser.PANELMODIFY.day.addActionListener(this);
             actualuser.PANELMODIFY.month.addActionListener(this);
             actualuser.PANELMODIFY.year.addActionListener(this);
-            actionput = true;
+            actionput = false;
             }
             invalidate();
             validate();
@@ -230,59 +229,59 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                 myprofile.modif = true;
                 if (login.selleruser) {
                     try {
-                        myprofile.saveNewSeller(this.i);
-                        i+=1;
+                        System.out.println("la je fais avec seller");
+                        myprofile.SellerModifiedProfile();
                         actualuser = myprofile.user;
                     } catch (SQLException ex) {
                         Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                myprofile.removeInfosOfProfile(actualuser);
-                repaint();
-                if (login.buyeruser) {
-                    setContentPane(buyerinterface);
-                } else if (login.selleruser) {
-                    setContentPane(sellerinterface);
+                    myprofile.removeInfosOfProfile(actualuser);
+
+                    if (login.buyeruser) {
+                        setContentPane(buyerinterface);
+                    } else if (login.selleruser) {
+                        setContentPane(sellerinterface);
+                    } else if (login.employeeuser) {
+                        setContentPane(employeeinterface);
+                    }
+
+                } else if (login.buyeruser) {
+                    try {
+                        System.out.println("la je fais avec buyer");
+                        myprofile.BuyerModifiedProfile();
+                        actualuser = myprofile.user;
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    myprofile.removeInfosOfProfile(actualuser);
+                    if (login.buyeruser) {
+                        setContentPane(buyerinterface);
+                    } else if (login.selleruser) {
+                        setContentPane(sellerinterface);
+                    } else if (login.employeeuser) {
+                        setContentPane(employeeinterface);
+                    }
+
                 } else if (login.employeeuser) {
-                    setContentPane(employeeinterface);
+                    try {
+                        System.out.println("la je fais avec employee");
+                        myprofile.EmployeeModifiedProfile();
+                        actualuser = myprofile.user;
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    myprofile.removeInfosOfProfile(actualuser);
+                    if (login.buyeruser) {
+                        setContentPane(buyerinterface);
+                    } else if (login.selleruser) {
+                        setContentPane(sellerinterface);
+                    } else if (login.employeeuser) {
+                        setContentPane(employeeinterface);
+                    }
+
                 }
                 invalidate();
                 validate();
-                }else if (login.buyeruser) {
-                    try {
-                        myprofile.saveNewBuyer();
-                        actualuser = myprofile.user;
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    myprofile.removeInfosOfProfile(actualuser);
-                    if (login.buyeruser) {
-                        setContentPane(buyerinterface);
-                    } else if (login.selleruser) {
-                        setContentPane(sellerinterface);
-                    } else if (login.employeeuser) {
-                        setContentPane(employeeinterface);
-                    }
-                    invalidate();
-                    validate();
-                }
-                else if (login.employeeuser) {
-                    try {
-                        myprofile.saveNewEmployee();
-                        actualuser = myprofile.user;
-                    } catch (SQLException ex) {
-                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    myprofile.removeInfosOfProfile(actualuser);
-                    if (login.buyeruser) {
-                        setContentPane(buyerinterface);
-                    } else if (login.selleruser) {
-                        setContentPane(sellerinterface);
-                    } else if (login.employeeuser) {
-                        setContentPane(employeeinterface);
-                    }
-                    invalidate();
-                    validate();
-                }
             }
 
             if (ae.getSource() == buyerinterface.viewall) {

@@ -178,19 +178,20 @@ public class SellerDAO {
         return checked;
     }
 
-    public void modifySellerProfile(User ancientseller, Seller newseller) throws SQLException {
-        int id = ancientseller.getID();
+    public void modifySellerProfile(User newseller) throws SQLException {
+        int id = newseller.getID();
         try (PreparedStatement myStmt = myConn.prepareStatement("UPDATE `sellers` SET `identifier`=?,`firstname`=?,`lastname`=?,`birthdate`=?,`adress`=?,`mail`=? WHERE `identifier` like ?")) {
             myStmt.setInt(1, id);
             myStmt.setString(2, newseller.getFirstName());
             myStmt.setString(3, newseller.getLastName());
             myStmt.setDate(4,newseller.getDate());
+            
             myStmt.setString(5, newseller.getAdress());
             myStmt.setString(6, newseller.getEmail());
             myStmt.setInt(7, id);
             myStmt.execute();
             myStmt.close();
-            //JOptionPane.showMessageDialog(null, "New infos have been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(null, "New infos have been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
             //System.out.println("YUP");
         }
 
