@@ -34,6 +34,10 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
      *
      */
     int i = 0;
+    SellerDAO sellerdao;
+    BuyerDAO buyerdao;
+    EmployeeDAO employeedao;
+    EstateDAO estatedao;
     User actualuser;
     MyLogIn login;
     NewAccount newaccount;
@@ -46,17 +50,20 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
     Vector<Seller> listOfSellers = new Vector();
     Vector<Buyer> listOfBuyers = new Vector();
     Vector<Employee> listOfEmployees = new Vector();
-    Connection con;
 
     MyInterface(int factor, int w, int h) throws IOException, Exception {
         this.setResizable(true);
-        login = new MyLogIn(factor);
-        newaccount = new NewAccount(factor);
+        sellerdao = new SellerDAO();
+        buyerdao = new BuyerDAO();
+        employeedao = new EmployeeDAO();
+        estatedao = new EstateDAO();
+        login = new MyLogIn(factor, sellerdao, buyerdao, employeedao);
+        newaccount = new NewAccount(factor, sellerdao, buyerdao, employeedao);
         propertysample = new ArrayList();
-        sellerinterface = new SellerInterface(factor);
-        buyerinterface = new BuyerInterface(propertysample, factor);
-        myprofile = new MyProfile();
-        employeeinterface = new EmployeeInterface();
+        sellerinterface = new SellerInterface(factor, estatedao);
+        buyerinterface = new BuyerInterface(propertysample, factor, estatedao);
+        myprofile = new MyProfile(actualuser, sellerdao, buyerdao, employeedao);
+        employeeinterface = new EmployeeInterface(sellerdao, buyerdao, employeedao);
         this.setSize(w, h);
         this.setTitle("Estate Manager");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -119,6 +126,7 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
         myprofile.backbutton.addActionListener(this);
         myprofile.modify.addActionListener(this);
         myprofile.save.addActionListener(this);
+        myprofile.delete.addActionListener(this);
         this.add(login);
     }
 
@@ -140,13 +148,19 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
             validate();
         }
         sellerinterface.SellerAddProperty(ae);
-        employeeinterface.EmployeeInteface(ae);
+        try {
+            employeeinterface.EmployeeInteface(ae, this);
+        } catch (SQLException ex) {
+            Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
         try {
             login.login(ae);
         } catch (Exception ex) {
             Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
         }
-        newaccount.createAccount(ae, listOfSellers, listOfBuyers, listOfEmployees, con);
+        newaccount.createAccount(ae, listOfSellers, listOfBuyers, listOfEmployees);
         if (ae.getSource() == login.newaccount) {
             setContentPane(newaccount);
             invalidate();
@@ -173,11 +187,11 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                 setContentPane(employeeinterface);
             }
             System.out.println("actual ID : " + actualuser.getID());
-            if (!actionput){
-            actualuser.PANELMODIFY.day.addActionListener(this);
-            actualuser.PANELMODIFY.month.addActionListener(this);
-            actualuser.PANELMODIFY.year.addActionListener(this);
-            actionput = false;
+            if (!actionput) {
+                actualuser.PANELMODIFY.day.addActionListener(this);
+                actualuser.PANELMODIFY.month.addActionListener(this);
+                actualuser.PANELMODIFY.year.addActionListener(this);
+                actionput = false;
             }
             invalidate();
             validate();
@@ -192,7 +206,7 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                     } catch (Exception ex) {
                         Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    buyerinterface.showResults();
+                    buyerinterface.showResults(this);
                     invalidate();
                     validate();
                 } catch (IOException ex) {
@@ -229,7 +243,6 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                 myprofile.modif = true;
                 if (login.selleruser) {
                     try {
-                        System.out.println("la je fais avec seller");
                         myprofile.SellerModifiedProfile();
                         actualuser = myprofile.user;
                     } catch (SQLException ex) {
@@ -247,7 +260,6 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
 
                 } else if (login.buyeruser) {
                     try {
-                        System.out.println("la je fais avec buyer");
                         myprofile.BuyerModifiedProfile();
                         actualuser = myprofile.user;
                     } catch (SQLException ex) {
@@ -264,7 +276,6 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
 
                 } else if (login.employeeuser) {
                     try {
-                        System.out.println("la je fais avec employee");
                         myprofile.EmployeeModifiedProfile();
                         actualuser = myprofile.user;
                     } catch (SQLException ex) {
@@ -282,6 +293,31 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                 }
                 invalidate();
                 validate();
+            } else if (ae.getSource() == myprofile.delete) {
+                if (login.buyeruser) {
+                    try {
+                        buyerdao.removeBuyer(this.actualuser);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (login.selleruser) {
+                    try {
+                        sellerdao.removeSeller(this.actualuser);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                } else if (login.employeeuser) {
+                    try {
+                        employeedao.removeEmployee(this.actualuser);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                login.logedin = false;
+                actualuser = null;
+                setContentPane(login);
+                invalidate();
+                validate();
             }
 
             if (ae.getSource() == buyerinterface.viewall) {
@@ -293,7 +329,7 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                     } catch (Exception ex) {
                         Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    buyerinterface.showResults();
+                    buyerinterface.showResults(this);
                     invalidate();
                     validate();
                 } catch (IOException ex) {

@@ -109,8 +109,8 @@ public class SellerInterface extends JPanel implements SellerConstInterface {
     ButtonGroup rentorsellgroup;
     JScrollPane SCROLLER;
 
-    SellerInterface(int factor) throws Exception {
-        estatedao = new EstateDAO();
+    SellerInterface(int factor, EstateDAO estatedao) throws Exception {
+        this.estatedao = estatedao;
         this.factor = factor;
         this.setLayout(new BorderLayout(10, 10));
         PANEL1 = new JPanel();
@@ -133,13 +133,15 @@ public class SellerInterface extends JPanel implements SellerConstInterface {
         PANEL7.setPreferredSize(new Dimension(200, 700));
         PANEL10.setPreferredSize(new Dimension(200, 100));
         PANEL11.setPreferredSize(new Dimension(200, 3000));
-        PANEL1.setBackground(Color.gray);
-        PANEL2.setBackground(Color.gray);
-        PANEL3.setBackground(Color.gray);
-        PANEL4.setBackground(Color.gray);
-        PANEL5.setBackground(Color.gray);
-        PANEL6.setBackground(Color.lightGray);
-        PANEL7.setBackground(Color.lightGray);
+        Color col = new Color(155, 155, 70);//darker
+        Color col2 = new Color(200, 200, 130);//lighter
+        PANEL1.setBackground(col);
+        PANEL2.setBackground(col);
+        PANEL3.setBackground(col);
+        PANEL4.setBackground(col);
+        PANEL5.setBackground(col);
+        PANEL6.setBackground(col2);
+        PANEL7.setBackground(col2);
         PANEL1.setLayout(new BorderLayout());
         PANEL10.setLayout(new BorderLayout());
         //PANEL11.setLayout(new GridLayout(properties.length, 2));
@@ -154,7 +156,7 @@ public class SellerInterface extends JPanel implements SellerConstInterface {
         //add everything to the PANELS
         this.setSize(1000 * this.factor, 600 * this.factor);
         //creating default font
-        Font font = new Font("Consolas", Font.PLAIN, 18 * factor);
+        Font font = new Font("Times New Roman", Font.PLAIN, 18 * factor);
         //creating labels
         location = new JLabel("Location");
         typeofproperty = new JLabel("property type");

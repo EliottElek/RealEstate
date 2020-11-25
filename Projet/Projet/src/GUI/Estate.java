@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -16,12 +17,14 @@ import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
-public abstract class Estate {
+public abstract class Estate implements SellerConstInterface {
 
     Blob image1;
     Blob image2;
@@ -29,17 +32,34 @@ public abstract class Estate {
     Blob[] images;
     private String location;
     private String adress;
-    private double price;
+    private int price;
     private int area;
     private int factor;
     private String description;
+    private int id;
     JPanel infos;
     JPanel imgs;
     JButton modify;
+    JButton save;
+    JButton delete;
+    JButton booking;
     JLabel[] imagefin = new JLabel[3];
     JScrollPane imagesScroller;
+    JComboBox newlocation;
+    JTextField newarea;
+    JTextField newdescription;
+    JTextField newprice;
+    JTextField newadress;
+    JLabel thislocation;
+    JLabel thisadress;
+    JLabel thisprice;
+    JLabel thisarea;
+    JLabel thisdescription;
 
-    public Estate(String location, String adress, double price, int area, String description, Blob image1, Blob image2, Blob image3, int factor) throws IOException {
+    ;
+
+    public Estate(int id, String location, String adress, int price, int area, String description, Blob image1, Blob image2, Blob image3, int factor) throws IOException {
+        this.id = id;
         this.location = location;
         this.adress = adress;
         this.price = price;
@@ -56,14 +76,28 @@ public abstract class Estate {
         infos = new JPanel();
         imgs = new JPanel();
         modify = new JButton("modify");
-        this.setInfos();
+        save = new JButton("save");
+        delete = new JButton("delete");
+        booking = new JButton("BOOK");
+        booking.setVisible(false);
+        //this.setInfos();
         modify.setFocusable(false);
+        booking.setFocusable(false);
+        delete.setFocusable(false);
+        save.setFocusable(false);
         modify.setVisible(false);
+        delete.setVisible(false);
+    }
+
+    public void updateInfos() {
+
     }
 
     public void setInfos() {
-        infos.setLayout(new GridLayout(7, 1));
-        Font font = new Font("Consolas", Font.PLAIN, 19 * this.factor);
+        delete.setBackground(Color.red);
+        infos.removeAll();
+        infos.setLayout(new GridLayout(8, 1));
+        Font font = new Font("Times New Roman", Font.PLAIN, 19 * this.factor);
         JLabel thislocation = new JLabel("Location : " + this.location);
         JLabel thisadress = new JLabel("adress : " + this.adress);
         JLabel thisprice = new JLabel("price : " + this.price + "$");
@@ -72,6 +106,7 @@ public abstract class Estate {
         thisdescription.setLineWrap(true);
         thisdescription.setWrapStyleWord(true);
         modify.setFont(font);
+        delete.setFont(font);
         thislocation.setFont(font);
         thisadress.setFont(font);
         thisprice.setFont(font);
@@ -82,11 +117,60 @@ public abstract class Estate {
         infos.add(thisprice);
         infos.add(thisarea);
         infos.add(thisdescription);
+        infos.add(booking);
+        infos.add(delete);
         infos.add(modify);
     }
 
-    public void addInfosOnPanel(JPanel panel) throws IOException {
-        imgs.setLayout(new GridLayout(1,3));
+    public void setModifyingInfos() {
+        infos.removeAll();
+        newadress = new JTextField(this.adress);
+        newarea = new JTextField(Integer.toString(this.area));
+        newdescription = new JTextField(this.description);
+        newprice = new JTextField(Integer.toString(this.price));
+        newlocation = new JComboBox(typesoflocations);
+        newlocation.setSelectedItem(this.location);
+        infos.setLayout(new GridLayout(8, 2));
+        Font font = new Font("Times New Roman", Font.PLAIN, 19 * this.factor);
+        thislocation = new JLabel("Location : ");
+        thisadress = new JLabel("adress : ");
+        thisprice = new JLabel("price : ");
+        thisarea = new JLabel("area : ");
+        thisdescription = new JLabel("description : ");
+        modify.setFont(font);
+        save.setFont(font);
+        newadress.setFont(font);
+        newarea.setFont(font);
+        newdescription.setFont(font);
+        newprice.setFont(font);
+        newlocation.setFont(font);
+        thislocation.setFont(font);
+        thisadress.setFont(font);
+        thisprice.setFont(font);
+        thisarea.setFont(font);
+        thisdescription.setFont(font);
+        infos.add(thislocation);
+        infos.add(newlocation);
+        infos.add(thisadress);
+        infos.add(newadress);
+        infos.add(thisprice);
+        infos.add(newprice);
+        infos.add(thisarea);
+        infos.add(newarea);
+        infos.add(thisdescription);
+        infos.add(newdescription);
+        infos.add(booking);
+        infos.add(delete);
+        infos.add(save);
+    }
+
+    public void addInfosOnPanel(JPanel panel, boolean modif) throws IOException {
+        if (!modif) {
+            this.setInfos();
+        } else if (modif) {
+            this.setModifyingInfos();
+        }
+        imgs.setLayout(new GridLayout(1, 3));
         for (int i = 0; i < 3; i++) {
             byte[] imagebytes = null;
             try {
@@ -116,7 +200,31 @@ public abstract class Estate {
         this.adress = adress;
     }
 
-    public void setPrice(double price) {
+    public int getID() {
+        return this.id;
+    }
+
+    public String getAdress() {
+        return this.adress;
+    }
+
+    public String getLocation() {
+        return this.location;
+    }
+
+    public int getArea() {
+        return this.area;
+    }
+
+    public int getPrice() {
+        return this.price;
+    }
+
+    String getDescription() {
+        return this.description;
+    }
+
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -128,12 +236,19 @@ public abstract class Estate {
         this.description = description;
     }
 
-    public JButton getModify()
-    {
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public void setArea(int area) {
+        this.area = area;
+    }
+
+    public JButton getModify() {
         return this.modify;
     }
-     public void setVisibleButton(boolean bool)
-    {
+
+    public void setVisibleButton(boolean bool) {
         modify.setVisible(bool);
     }
 }

@@ -14,8 +14,8 @@ import java.sql.Blob;
  */
 public class RealEstate extends Estate {
 
-    public RealEstate(String location, String adress, double price, int area, String description, Blob image1, Blob image2, Blob image3, int factor) throws IOException {
-        super(location, adress, price, area, description, image1, image2, image3, factor);
+    public RealEstate(int id,String location, String adress, int price, int area, String description, Blob image1, Blob image2, Blob image3, int factor) throws IOException {
+        super(id,location, adress, price, area, description, image1, image2, image3, factor);
     }
 
 }

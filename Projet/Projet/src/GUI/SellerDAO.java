@@ -83,6 +83,20 @@ public class SellerDAO {
         stmt.close();
     }
 
+    public void removeSeller(User user) throws SQLException {
+        int reponse = JOptionPane.showConfirmDialog(null,
+                "Do you really want to delete this seller ?",
+                "Delete seller",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        if (reponse == JOptionPane.YES_OPTION) {
+            int id = user.getID();
+            PreparedStatement ps = myConn.prepareStatement("DELETE FROM `sellers` WHERE `identifier` like  ? ;");
+            ps.setInt(1, id);
+            ps.execute();
+            ps.close();
+        }
+    }
+    
     public ArrayList<Seller> searchSellers(String lastName) throws Exception {
         ArrayList<Seller> list = new ArrayList<>();
 

@@ -74,10 +74,10 @@ public class NewAccount extends JPanel implements MyLogInConstant {
     JButton createaccount;
     JButton back;
 
-    public NewAccount(int factor) throws Exception {
-        sellerdao = new SellerDAO();
-        buyerdao = new BuyerDAO();
-        employeedao = new EmployeeDAO();
+    public NewAccount(int factor, SellerDAO sellerdao, BuyerDAO buyerdao, EmployeeDAO employeedao) throws Exception {
+        this.sellerdao = sellerdao;
+        this.buyerdao = buyerdao;
+        this.employeedao = employeedao;
         this.factor = factor;
         this.setSize(1000 * this.factor, 600 * this.factor);
         this.setLayout(new BorderLayout(8, 8));
@@ -88,9 +88,11 @@ public class NewAccount extends JPanel implements MyLogInConstant {
         PANEL1.setPreferredSize(new Dimension(100, 150));
         PANEL2.setPreferredSize(new Dimension(100, 100));
         PANEL3.setPreferredSize(new Dimension(200, 100));
-        PANEL1.setBackground(Color.gray);
-        PANEL2.setBackground(Color.lightGray);
-        PANEL3.setBackground(Color.gray);
+        Color col = new Color(155, 155, 70);//darker
+        Color col2 = new Color(200, 200, 130);//lighter
+        PANEL1.setBackground(col);
+        PANEL2.setBackground(col2);
+        PANEL3.setBackground(col);
         PANEL2.setLayout(new GridLayout(12, 3, 8, 8));
         PANELDATE.setLayout(new GridLayout(1, 3));
         days = new String[31];
@@ -107,7 +109,7 @@ public class NewAccount extends JPanel implements MyLogInConstant {
             years[i] = Integer.toString(2020 - i);
         }
         //creation of the text fields for user's info prompting
-        Font font = new Font("Consolas", Font.PLAIN, 18 * factor);
+        Font font = new Font("Times New Roman", Font.PLAIN, 18 * factor);
         newfirstname = new JTextField();
         newlastname = new JTextField();
         newmail = new JTextField();
@@ -201,7 +203,7 @@ public class NewAccount extends JPanel implements MyLogInConstant {
 
     }
 
-    public void createAccount(ActionEvent ae, Vector<Seller> listOfSellers, Vector<Buyer> listOfBuyers, Vector<Employee> listOfEmployees, Connection con) {
+    public void createAccount(ActionEvent ae, Vector<Seller> listOfSellers, Vector<Buyer> listOfBuyers, Vector<Employee> listOfEmployees) {
         createaccount.setEnabled(false);
         if (user.getSelectedItem().equals("Employee")) {
             if (i == 0) {
@@ -300,7 +302,7 @@ public class NewAccount extends JPanel implements MyLogInConstant {
                 m = Integer.parseInt(month);
                 String year = (String) birthyear.getSelectedItem();
                 y = Integer.parseInt(year);
-                Date date = new Date(y,m,d);
+                Date date = new Date(y, m, d);
                 date.setDate(d);
                 date.setMonth(m);
                 date.setYear(y);
@@ -339,7 +341,7 @@ public class NewAccount extends JPanel implements MyLogInConstant {
                 m = Integer.parseInt(month);
                 String year = (String) birthyear.getSelectedItem();
                 y = Integer.parseInt(year);
-                Date date = new Date(y,m,d);
+                Date date = new Date(y, m, d);
                 date.setDate(d);
                 date.setMonth(m);
                 date.setYear(y);
@@ -378,7 +380,7 @@ public class NewAccount extends JPanel implements MyLogInConstant {
                 m = Integer.parseInt(month);
                 String year = (String) birthyear.getSelectedItem();
                 y = Integer.parseInt(year);
-                Date date = new Date(y,m,d);
+                Date date = new Date(y, m, d);
                 date.setDate(d);
                 date.setMonth(m);
                 date.setYear(y);

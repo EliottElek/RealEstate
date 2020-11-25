@@ -3,6 +3,7 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.sql.SQLException;
 import java.sql.Date;
@@ -30,11 +31,14 @@ public class MyProfile extends JPanel {
     SellerDAO sellerdao;
     BuyerDAO buyerdao;
     EmployeeDAO employeedao;
+    Font font;
 
-    MyProfile() throws Exception {
-        sellerdao = new SellerDAO();
-        buyerdao = new BuyerDAO();
-        employeedao = new EmployeeDAO();
+    MyProfile(User user, SellerDAO sellerdao, BuyerDAO buyerdao, EmployeeDAO employeedao) throws Exception {
+        font = new Font("Times New Roman", Font.PLAIN, 18);
+        this.user = user;
+        this.sellerdao = sellerdao;
+        this.buyerdao = buyerdao;
+        this.employeedao = employeedao;
         this.setVisible(true);
         PANEL1 = new JPanel();
         PANEL2 = new JPanel();
@@ -56,6 +60,18 @@ public class MyProfile extends JPanel {
         back.setLayout(new GridLayout(3, 1));
         PANEL5.setLayout(new GridLayout(2, 1));
         COMMANDPANEL.setLayout(new GridLayout(6, 5));
+        backbutton.setFont(font);
+        modify.setFont(font);
+        delete.setFont(font);
+        seebookings.setFont(font);
+        logout.setFont(font);
+        save.setFont(font);
+        backbutton.setFocusable(false);
+        modify.setFocusable(false);
+        delete.setFocusable(false);
+        seebookings.setFocusable(false);
+        logout.setFocusable(false);
+        save.setFocusable(false);
         //setting the sizes of PANELS
         PANEL1.setPreferredSize(new Dimension(200, 100));
         PANEL2.setPreferredSize(new Dimension(200, 100));
@@ -64,12 +80,14 @@ public class MyProfile extends JPanel {
         PANEL5.setPreferredSize(new Dimension(200, 100));
         back.setPreferredSize(new Dimension(200, 100));
         //setting PANELS colors 
-        PANEL1.setBackground(Color.gray);
-        PANEL2.setBackground(Color.gray);
-        PANEL3.setBackground(Color.gray);
-        PANEL4.setBackground(Color.gray);
-        PANEL5.setBackground(Color.gray);
-        back.setBackground(Color.gray);
+        Color col = new Color(155, 155, 70);//darker
+        Color col2 = new Color(200, 200, 130);//lighter
+        PANEL1.setBackground(col);
+        PANEL2.setBackground(col);
+        PANEL3.setBackground(col);
+        PANEL4.setBackground(col);
+        PANEL5.setBackground(col);
+        back.setBackground(col);
         this.add(PANEL1, BorderLayout.NORTH);
         this.add(PANEL2, BorderLayout.SOUTH);
         this.add(PANEL3, BorderLayout.WEST);
@@ -86,7 +104,6 @@ public class MyProfile extends JPanel {
         for (int i = 0; i < 22; i++) {
             COMMANDPANEL.add(new JLabel());
         }
-
     }
 
     public void ShowInfosOfProfile(User user) {
@@ -134,7 +151,7 @@ public class MyProfile extends JPanel {
         String lastname = user.PANELMODIFY.lastname.getText();
         String adress = user.PANELMODIFY.adress.getText();
         String mail = user.PANELMODIFY.mail.getText();
-        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem())-1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
+        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()) - 1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
         this.user.setFirstName(firstname);
         this.user.setLastName(lastname);
         this.user.setAdress(adress);
@@ -149,7 +166,7 @@ public class MyProfile extends JPanel {
         String lastname = user.PANELMODIFY.lastname.getText();
         String adress = user.PANELMODIFY.adress.getText();
         String mail = user.PANELMODIFY.mail.getText();
-        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem())-1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
+        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()) - 1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
         this.user.setFirstName(firstname);
         this.user.setLastName(lastname);
         this.user.setAdress(adress);
@@ -164,7 +181,7 @@ public class MyProfile extends JPanel {
         String lastname = user.PANELMODIFY.lastname.getText();
         String adress = user.PANELMODIFY.adress.getText();
         String mail = user.PANELMODIFY.mail.getText();
-        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem())-1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
+        Date date = new Date(Integer.parseInt((String) user.PANELMODIFY.year.getSelectedItem()) - 1900, Integer.parseInt((String) user.PANELMODIFY.month.getSelectedItem()) - 1, Integer.parseInt((String) user.PANELMODIFY.day.getSelectedItem()));
         this.user.setFirstName(firstname);
         this.user.setLastName(lastname);
         this.user.setAdress(adress);

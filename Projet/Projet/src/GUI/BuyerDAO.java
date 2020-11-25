@@ -110,6 +110,20 @@ public class BuyerDAO {
         stmt.execute(dbop);
         stmt.close();
     }
+    
+    public void removeBuyer(User user) throws SQLException {
+        int reponse = JOptionPane.showConfirmDialog(null,
+                "Do you really want to delete this buyer ?",
+                "Delete buyer",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        if (reponse == JOptionPane.YES_OPTION) {
+            int id = user.getID();
+            PreparedStatement ps = myConn.prepareStatement("DELETE FROM `buyers` WHERE `identifier` like  ? ;");
+            ps.setInt(1, id);
+            ps.execute();
+            ps.close();
+        }
+    }
 
     public Buyer getBuyerAccount(String lastName, String password) throws Exception {
         Buyer buyer = null;

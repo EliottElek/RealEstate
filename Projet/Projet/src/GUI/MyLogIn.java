@@ -56,12 +56,12 @@ public class MyLogIn extends JPanel implements MyLogInConstant {
     boolean buyeruser = false;
     boolean selleruser = false;
 
-    MyLogIn(int factor) throws Exception {
-        buyerdao = new BuyerDAO();
-        employeedao = new EmployeeDAO();
-        sellerdao = new SellerDAO();
+    MyLogIn(int factor,SellerDAO sellerdao, BuyerDAO buyerdao, EmployeeDAO employeedao) throws Exception {
+        this.buyerdao = buyerdao;
+        this.employeedao = employeedao;
+        this.sellerdao = sellerdao;
         this.factor = factor;
-        Font font = new Font("Consolas", Font.PLAIN, 18 * factor);
+        Font font = new Font("Times New Roman", Font.PLAIN, 18 * factor);
         this.setLayout(new BorderLayout(10, 10));
         this.setSize(1000 * this.factor, 600 * this.factor);
         PANEL1 = new JPanel();
@@ -70,9 +70,11 @@ public class MyLogIn extends JPanel implements MyLogInConstant {
         PANEL1.setPreferredSize(new Dimension(100, 150));
         PANEL2.setPreferredSize(new Dimension(100, 100));
         PANEL3.setPreferredSize(new Dimension(200, 100));
-        PANEL1.setBackground(Color.gray);
-        PANEL2.setBackground(Color.lightGray);
-        PANEL3.setBackground(Color.gray);
+        Color col = new Color(155,155,70);//darker
+        Color col2 = new Color(200,200,130);//lighter
+        PANEL1.setBackground(col);
+        PANEL2.setBackground(col2);
+        PANEL3.setBackground(col);
         PANEL1.setLayout(new BorderLayout(5, 5));
         PANEL2.setLayout(new GridLayout(9, 3, 8, 8));
         PANEL3.setLayout(new GridLayout(3, 1, 3, 3));

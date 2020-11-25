@@ -11,6 +11,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -51,6 +52,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     JPanel PANEL10;
     JPanel PANEL11;
     JScrollPane SCROLLER;
+    JScrollPane SCROLLER2;
     JLabel location;
     JLabel typeofproperty;
     JLabel pricerange;
@@ -92,14 +94,14 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     JButton viewall;
     ArrayList<Estate> properties;
 
-    BuyerInterface(ArrayList<Estate> properties, int factor) throws Exception {
+    BuyerInterface(ArrayList<Estate> properties, int factor, EstateDAO estatedao) throws Exception {
         this.factor = factor;
         this.properties = properties;
-        estatedao = new EstateDAO();
+        this.estatedao = estatedao;
         //this.setBackground(Color.lightGray);
         //creating default font
-        Font font = new Font("Consolas", Font.PLAIN, 18 * factor);
-        Font font2 = new Font("Consolas", Font.PLAIN, 10);
+        Font font = new Font("Times New Roman", Font.PLAIN, 18 * factor);
+        Font font2 = new Font("Times New Roman", Font.PLAIN, 10);
         //setting the layout
         this.setLayout(new BorderLayout(10, 10));
         //setting the size
@@ -118,30 +120,32 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         PANEL11 = new JPanel();
         //setting the sizes of PANELS
         PANEL1.setPreferredSize(new Dimension(200, 100));
-        PANEL2.setPreferredSize(new Dimension(200, 100));
+        PANEL2.setPreferredSize(new Dimension(200, 30));
         PANEL3.setPreferredSize(new Dimension(200, 100));
         PANEL4.setPreferredSize(new Dimension(200, 100));
         PANEL5.setPreferredSize(new Dimension(200, 100));
-        PANEL10.setPreferredSize(new Dimension(200, 100));
+        PANEL10.setPreferredSize(new Dimension(250, 100));
         PANEL11.setPreferredSize(new Dimension(200, 800 * (this.properties.size() + 1)));
         //setting PANELS colors 
-        PANEL1.setBackground(Color.gray);
-        PANEL2.setBackground(Color.gray);
-        PANEL3.setBackground(Color.gray);
-        PANEL4.setBackground(Color.gray);
-        PANEL5.setBackground(Color.gray);
-        PANEL6.setBackground(Color.lightGray);
-        PANEL7.setBackground(Color.lightGray);
-        PANEL8.setBackground(Color.lightGray);
-        PANEL9.setBackground(Color.lightGray);
-        PANEL11.setBackground(Color.lightGray);
+        Color col = new Color(155, 155, 70);//darker
+        Color col2 = new Color(200, 200, 130);//lighter
+        PANEL1.setBackground(col);
+        PANEL2.setBackground(col);
+        PANEL3.setBackground(col);
+        PANEL4.setBackground(col);
+        PANEL5.setBackground(col);
+        PANEL6.setBackground(col2);
+        PANEL7.setBackground(col2);
+        PANEL8.setBackground(col2);
+        PANEL9.setBackground(col2);
+        PANEL11.setBackground(col2);
         //PANEL5 is the center panel. We mant a gridLayout in it
         PANEL1.setLayout(new BorderLayout(2, 2));
         PANEL10.setLayout(new BorderLayout(2, 2));
-        PANEL11.setLayout(new GridLayout(this.properties.size(), 2));
+        //PANEL11.setLayout(new GridLayout(this.properties.size(), 2));
         PANEL5.setLayout(new GridLayout(1, 2, 2, 2));
         PANEL6.setLayout(new GridLayout(2, 1, 2, 2));
-        PANEL7.setLayout(new GridLayout(14, 2, 2, 2));
+        PANEL7.setLayout(new GridLayout(12, 2, 2, 2));
         PANEL8.setLayout(new GridLayout(7, 1, 2, 2));
         PANEL9.setLayout(new GridLayout(7, 2, 2, 2));
         PANEL3.setLayout(new GridLayout(7, 1, 2, 2));
@@ -256,7 +260,10 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         PANEL10.add(logout, BorderLayout.NORTH);
         //adding PANEL6 and PANEL7 to PANEL5
         PANEL5.add(PANEL6);
-        PANEL5.add(PANEL7);
+        SCROLLER2 = new JScrollPane(PANEL7);
+        SCROLLER2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        SCROLLER2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        PANEL5.add(SCROLLER2);
         //adding PANELS 8 and 9 to PANEL6
         //add everything to the PANELS
         PANEL6.add(PANEL8);
@@ -304,13 +311,13 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
 
     }
 
-    public void showResults() throws IOException {
+    public void showResults(ActionListener al) throws IOException {
         //PANEL11.setLayout(new GridLayout(properties.size(), 2));
         PANEL5.remove(PANEL6);
         PANEL5.remove(PANEL7);
         PANEL11.setLayout(new GridLayout(this.properties.size(), 2));
         PANEL11.setPreferredSize(new Dimension(200, 800 * (this.properties.size())));
-        showAllPropertiesImage(PANEL11);
+        showAllPropertiesImage(PANEL11, al);
         SCROLLER = new JScrollPane(PANEL11);
         SCROLLER.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         SCROLLER.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -329,9 +336,11 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         repaint();
     }
 
-    void showAllPropertiesImage(JPanel panel) throws IOException {
+    void showAllPropertiesImage(JPanel panel, ActionListener al) throws IOException {
         for (Estate propertie : properties) {
-            propertie.addInfosOnPanel(PANEL11);
+            propertie.addInfosOnPanel(PANEL11, false);
+            propertie.booking.setVisible(true);
+            propertie.booking.addActionListener(al);
         }
     }
 
@@ -339,8 +348,9 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
 
         for (Estate propertie : properties) {
             propertie.removeInfos(PANEL11);
-        }
 
+        }
+        PANEL5.remove(SCROLLER2);
         properties.removeAll(properties);
 
     }

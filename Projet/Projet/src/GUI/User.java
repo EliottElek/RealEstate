@@ -1,5 +1,6 @@
 package GUI;
 
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.lang.Object;
 import java.util.Calendar;
@@ -23,6 +24,7 @@ public abstract class User {
     JLabel labeladress;
     JLabel labelemail;
     JLabel labeldate;
+    Font font;
 
     public User(int id, String firstname, String lastname, Date birthdate, String adress, String mail) {
         this.id = id;
@@ -33,13 +35,14 @@ public abstract class User {
         this.mail = mail;
         PANELINFOS = new JPanel();
         PANELMODIFY = new MyProfileModify(this);
+        font = new Font("Consolas", Font.PLAIN, 18);
         showInfosMyProfile();
     }
 
-    public int getID()
-    {
+    public int getID() {
         return this.id;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
@@ -83,8 +86,8 @@ public abstract class User {
     public void setBirthDate(Date birthdate) {
         this.birthdate = birthdate;
     }
-    public Date getDate()
-    {
+
+    public Date getDate() {
         return this.birthdate;
     }
 
@@ -102,32 +105,50 @@ public abstract class User {
 
     public abstract void showInfos();
 
-   public void showInfosMyProfile()
-    {
+    public void showInfosMyProfile() {
         labelfirstname = new JLabel(this.firstname);
         labellastname = new JLabel(this.lastname);
         labeladress = new JLabel(this.adress);
         labelemail = new JLabel(this.mail);
         labeldate = new JLabel(this.birthdate.toString());
-        PANELINFOS.setLayout(new GridLayout(5,2));
-        PANELINFOS.add(new JLabel("FIRSTNAME"));
+        PANELINFOS.setLayout(new GridLayout(5, 2));
+        JLabel label1 = new JLabel("FIRSTNAME");
+        JLabel label2 = new JLabel("LASTNAME");
+        JLabel label3 = new JLabel("ADRESS");
+        JLabel label4 = new JLabel("MAIL");
+        JLabel label5 = new JLabel("BIRTHDATE");
+
+        label1.setFont(font);
+        label2.setFont(font);
+        label3.setFont(font);
+        label4.setFont(font);
+        label5.setFont(font);
+
+        labelfirstname.setFont(font);
+        labellastname.setFont(font);
+        labeladress.setFont(font);
+        labelemail.setFont(font);
+        labeldate.setFont(font);
+        PANELINFOS.setLayout(new GridLayout(5, 2));
+
+        PANELINFOS.add(label1);
         PANELINFOS.add(labelfirstname);
-        PANELINFOS.add(new JLabel("LASTNAME"));
+        PANELINFOS.add(label2);
         PANELINFOS.add(labellastname);
-        PANELINFOS.add(new JLabel("ADRESS"));
+        PANELINFOS.add(label3);
         PANELINFOS.add(labeladress);
-        PANELINFOS.add(new JLabel("MAIL"));
+        PANELINFOS.add(label4);
         PANELINFOS.add(labelemail);
-        PANELINFOS.add(new JLabel("BIRTHDATE"));
+        PANELINFOS.add(label5);
         PANELINFOS.add(labeldate);
 
-    }    
-     public  void updateInfosMyProfile()
-     {
-         labelfirstname.setText(this.firstname);
-         labellastname.setText(this.lastname);
-         labeladress.setText(this.adress);
-         labeldate.setText(this.birthdate.toString());
-         labelemail.setText(this.mail);
-     }
- }
+    }
+
+    public void updateInfosMyProfile() {
+        labelfirstname.setText(this.firstname);
+        labellastname.setText(this.lastname);
+        labeladress.setText(this.adress);
+        labeldate.setText(this.birthdate.toString());
+        labelemail.setText(this.mail);
+    }
+}

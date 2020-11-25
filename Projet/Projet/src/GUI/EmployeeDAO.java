@@ -71,6 +71,20 @@ public class EmployeeDAO {
         }
     }
 
+    public void removeEmployee(User user) throws SQLException {
+        int reponse = JOptionPane.showConfirmDialog(null,
+                "Do you really want to delete this employee ?",
+                "Delete employee",
+                JOptionPane.YES_NO_CANCEL_OPTION);
+        if (reponse == JOptionPane.YES_OPTION) {
+            int id = user.getID();
+            PreparedStatement ps = myConn.prepareStatement("DELETE FROM `employees` WHERE `identifier` like  ? ;");
+            ps.setInt(1, id);
+            ps.execute();
+            ps.close();
+        }
+    }
+
     public boolean profileCheck(String mail, String password, int number) {
         boolean checked = false;
         try {
