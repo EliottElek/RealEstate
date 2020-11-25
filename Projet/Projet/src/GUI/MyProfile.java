@@ -35,6 +35,7 @@ public class MyProfile extends JPanel {
 
     MyProfile(User user, SellerDAO sellerdao, BuyerDAO buyerdao, EmployeeDAO employeedao) throws Exception {
         font = new Font("Times New Roman", Font.PLAIN, 18);
+        Color red = new Color(240,60,60);
         this.user = user;
         this.sellerdao = sellerdao;
         this.buyerdao = buyerdao;
@@ -63,6 +64,7 @@ public class MyProfile extends JPanel {
         backbutton.setFont(font);
         modify.setFont(font);
         delete.setFont(font);
+        delete.setBackground(red);
         seebookings.setFont(font);
         logout.setFont(font);
         save.setFont(font);

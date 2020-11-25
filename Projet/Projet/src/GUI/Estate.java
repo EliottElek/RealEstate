@@ -79,6 +79,7 @@ public abstract class Estate implements SellerConstInterface {
         save = new JButton("save");
         delete = new JButton("delete");
         booking = new JButton("BOOK");
+        delete.setBackground(new Color(240,60,60));
         booking.setVisible(false);
         //this.setInfos();
         modify.setFocusable(false);
