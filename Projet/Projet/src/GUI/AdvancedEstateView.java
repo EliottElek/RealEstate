@@ -5,10 +5,12 @@
  */
 package GUI;
 
+import javax.swing.JPanel;
+
 /**
  *
  * @author eliot
  */
-class Jlabel {
+public class AdvancedEstateView extends JPanel{
     
 }

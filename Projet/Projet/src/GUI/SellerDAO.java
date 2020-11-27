@@ -96,7 +96,7 @@ public class SellerDAO {
             ps.close();
         }
     }
-    
+
     public ArrayList<Seller> searchSellers(String lastName) throws Exception {
         ArrayList<Seller> list = new ArrayList<>();
 
@@ -198,8 +198,8 @@ public class SellerDAO {
             myStmt.setInt(1, id);
             myStmt.setString(2, newseller.getFirstName());
             myStmt.setString(3, newseller.getLastName());
-            myStmt.setDate(4,newseller.getDate());
-            
+            myStmt.setDate(4, newseller.getDate());
+
             myStmt.setString(5, newseller.getAdress());
             myStmt.setString(6, newseller.getEmail());
             myStmt.setInt(7, id);
@@ -212,16 +212,18 @@ public class SellerDAO {
     }
 
     private Seller convertRowToSeller(ResultSet myRs) throws SQLException {
+        Seller temp = null;
 
-        int id = myRs.getInt("identifier");
-        String lastName = myRs.getString("lastname");
-        String firstName = myRs.getString("firstname");
-        String email = myRs.getString("mail");
-        Date date = myRs.getDate("birthdate");
-        String adress = myRs.getString("adress");
+        if (myRs.next()) {
+            int id = myRs.getInt("identifier");
+            String lastName = myRs.getString("lastname");
+            String firstName = myRs.getString("firstname");
+            String email = myRs.getString("mail");
+            Date date = myRs.getDate("birthdate");
+            String adress = myRs.getString("adress");
 
-        Seller temp = new Seller(id, firstName, lastName, date, adress, email);
-
+            temp = new Seller(id, firstName, lastName, date, adress, email);
+        }
         return temp;
     }
 

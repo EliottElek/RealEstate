@@ -38,6 +38,7 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
     BuyerDAO buyerdao;
     EmployeeDAO employeedao;
     EstateDAO estatedao;
+    BookingDAO bookingdao;
     User actualuser;
     MyLogIn login;
     NewAccount newaccount;
@@ -57,11 +58,12 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
         buyerdao = new BuyerDAO();
         employeedao = new EmployeeDAO();
         estatedao = new EstateDAO();
+        bookingdao = new BookingDAO();
         login = new MyLogIn(factor, sellerdao, buyerdao, employeedao);
         newaccount = new NewAccount(factor, sellerdao, buyerdao, employeedao);
         propertysample = new ArrayList();
         sellerinterface = new SellerInterface(factor, estatedao);
-        buyerinterface = new BuyerInterface(propertysample, factor, estatedao);
+        buyerinterface = new BuyerInterface(propertysample, factor, estatedao, bookingdao);
         myprofile = new MyProfile(actualuser, sellerdao, buyerdao, employeedao);
         employeeinterface = new EmployeeInterface(sellerdao, buyerdao, employeedao);
         this.setSize(w, h);
@@ -96,8 +98,6 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
         buyerinterface.gardenchoice.addActionListener(this);
         buyerinterface.back.addActionListener(this);
         buyerinterface.logout.addActionListener(this);
-        buyerinterface.buybutton.addActionListener(this);
-        buyerinterface.rentbutton.addActionListener(this);
         buyerinterface.viewall.addActionListener(this);
         buyerinterface.myprofile.addActionListener(this);
 
@@ -213,6 +213,11 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                     Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+            try {
+                buyerinterface.bookFunction(ae,actualuser,this);
+            } catch (SQLException ex) {
+                Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (ae.getSource() == myprofile.backbutton) {
                 myprofile.removeInfosOfProfile(actualuser);
                 if (login.buyeruser) {
@@ -325,7 +330,7 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
                 buyerinterface.viewall.setVisible(false);
                 try {
                     try {
-                        buyerinterface.showAllResults();
+                        buyerinterface.showAllResults(this);
                     } catch (Exception ex) {
                         Logger.getLogger(MyInterface.class.getName()).log(Level.SEVERE, null, ex);
                     }

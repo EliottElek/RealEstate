@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -23,6 +24,7 @@ import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -37,6 +39,7 @@ import javax.swing.event.ChangeEvent;
 public class BuyerInterface extends JPanel implements BuyerConstInterface {
 
     EstateDAO estatedao;
+    BookingDAO bookingdao;
     int factor;
     String rent;
     String gardenornot;
@@ -78,13 +81,12 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     JComboBox state;
     JComboBox locate;
     JComboBox gardenchoice;
+    JComboBox locatebuybox;
 
     JSlider price;
     JSlider minarea;
     JSlider maxarea;
     JSlider gardenareachosen;
-    JRadioButton buybutton;
-    JRadioButton rentbutton;
     ButtonGroup group;
     JButton search;
     JButton logout;
@@ -94,10 +96,11 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     JButton viewall;
     ArrayList<Estate> properties;
 
-    BuyerInterface(ArrayList<Estate> properties, int factor, EstateDAO estatedao) throws Exception {
+    BuyerInterface(ArrayList<Estate> properties, int factor, EstateDAO estatedao, BookingDAO bookingdao) throws Exception {
         this.factor = factor;
         this.properties = properties;
         this.estatedao = estatedao;
+        this.bookingdao = bookingdao;
         //this.setBackground(Color.lightGray);
         //creating default font
         Font font = new Font("Times New Roman", Font.PLAIN, 18 * factor);
@@ -145,9 +148,9 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         //PANEL11.setLayout(new GridLayout(this.properties.size(), 2));
         PANEL5.setLayout(new GridLayout(1, 2, 2, 2));
         PANEL6.setLayout(new GridLayout(2, 1, 2, 2));
-        PANEL7.setLayout(new GridLayout(12, 2, 2, 2));
-        PANEL8.setLayout(new GridLayout(7, 1, 2, 2));
-        PANEL9.setLayout(new GridLayout(7, 2, 2, 2));
+        PANEL7.setLayout(new GridLayout(12, 1, 2, 2));
+        PANEL8.setLayout(new GridLayout(8, 1, 2, 2));
+        PANEL9.setLayout(new GridLayout(8, 2, 2, 2));
         PANEL3.setLayout(new GridLayout(7, 1, 2, 2));
         //creating labels
         location = new JLabel("Location");
@@ -166,6 +169,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         gardenarea = new JLabel();
         pricerangecursor = new JLabel();
         //creating combo boxes
+        locatebuybox = new JComboBox(rentorbuychoice);
         locate = new JComboBox(typesoflocations);
         typechosen = new JComboBox(typesofproperties);
         proximitychosen = new JComboBox(typesofproximities);
@@ -176,9 +180,6 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         renovation = new JComboBox(typesrenovation);
         state = new JComboBox(propertystate);
         gardenchoice = new JComboBox(gardentype);
-        //creating radion buttons
-        buybutton = new JRadioButton("Buy");
-        rentbutton = new JRadioButton("Rent");
         //creating buttons
         search = new JButton("SEARCH");
         logout = new JButton("LOG OUT");
@@ -192,8 +193,6 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         maxarea = new JSlider(20, 1000, 120);
         gardenareachosen = new JSlider(0, 500, 60);
         //setting buttons to not focudable
-        buybutton.setFocusable(false);
-        rentbutton.setFocusable(false);
         search.setFocusable(false);
         logout.setFocusable(false);
         myprofile.setFocusable(false);
@@ -221,11 +220,10 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         typeofproperty.setFont(font);
         pricerange.setFont(font);
         proximity.setFont(font);
+        locatebuybox.setFont(font);
         locateorbuy.setFont(font);
         nbbthrooms.setFont(font);
         nbrooms.setFont(font);
-        buybutton.setFont(font);
-        rentbutton.setFont(font);
         typechosen.setFont(font);
         proximitychosen.setFont(font);
         nbminroomschosen.setFont(font);
@@ -246,9 +244,6 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         gardenareachosen.setFont(font);
         gardenarea.setFont(font);
         back.setFont(font);
-        //adding buttons to group
-        group.add(buybutton);
-        group.add(rentbutton);
         //adding every PANELS
         this.add(PANEL1, BorderLayout.NORTH);
         this.add(PANEL2, BorderLayout.SOUTH);
@@ -276,8 +271,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         PANEL8.add(renovate);
         PANEL8.add(renovation);
         PANEL8.add(locateorbuy);
-        PANEL9.add(buybutton);
-        PANEL9.add(rentbutton);
+        PANEL8.add(locatebuybox);
         PANEL9.add(nbrooms);
         PANEL9.add(new JLabel());
         PANEL9.add(nbminroomschosen);
@@ -301,8 +295,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         PANEL7.add(gardenchoice);
         PANEL7.add(gardenareachosen);
         PANEL7.add(gardenarea);
-        PANEL7.add(new JLabel());
-        PANEL7.add(new JLabel());
+        //PANEL7.add(new JLabel());
         PANEL7.add(search);
         PANEL3.add(latestadds, BorderLayout.CENTER);
         PANEL3.add(viewall, BorderLayout.SOUTH);
@@ -383,6 +376,56 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         } else {
             gardenareachosen.setEnabled(true);
         }
+
+    }
+
+    public void bookFunction(ActionEvent ae, User buyer, ActionListener al) throws SQLException {
+
+        for (Estate propertie : properties) {
+            if (ae.getSource() == propertie.booking) {
+                java.sql.Date date = returnDate(returnBookingDates(), al, ae);
+                System.out.println("date :" + date.toString());
+                System.out.println("jiji");
+            }
+        }
+    }
+
+    public java.sql.Date[] returnBookingDates() {
+        java.sql.Date utilDate = new java.sql.Date(1,1,1);
+        java.sql.Date FinalDates[] = new java.sql.Date[30];
+        java.util.Date dates[] = new java.util.Date[30];
+        for (int i = 0; i < 30; i++) {
+            System.out.println("date : " + utilDate.getDate() + "/" + utilDate.getMonth() + "/" + utilDate.getYear());
+            utilDate.setDate(utilDate.getDay()+1);
+            dates[i] = utilDate;
+            FinalDates[i]= new java.sql.Date(dates[i].getDate(),dates[i].getMonth(),dates[i].getYear());
+        }
+
+        return FinalDates;
+    }
+
+    public java.sql.Date returnDate(java.sql.Date[] dates, ActionListener al, ActionEvent ae) {
+        java.sql.Date selectdate = new  java.sql.Date(1,1,1);
+        JFrame popup = new JFrame("book visit");
+        popup.setLayout(new GridLayout());
+        popup.setSize(400, 300);
+        JPanel toppart = new JPanel();
+        toppart.setBackground(Color.GRAY);
+        JPanel rest = new JPanel();
+        popup.add(toppart, BorderLayout.NORTH);
+        popup.add(rest, BorderLayout.CENTER);
+        JComboBox box = new JComboBox(dates);
+        rest.add(box);
+        popup.setVisible(true);
+        popup.setResizable(false);
+        JButton book = new JButton("book");
+        rest.add(book);
+        book.setFocusable(false);
+        book.addActionListener(al);
+        if (ae.getSource() == book) {
+            selectdate = (Date) box.getSelectedItem();
+        }
+        return selectdate;
     }
 
     void showResearchResults(ActionEvent ae) throws Exception {
@@ -445,9 +488,9 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         } else {
             thisgarden = "='" + gardenornot + "'";
         }
-        if (ae.getSource() == rentbutton) {
-            thisrent = "='yes'";
-        } else if (ae.getSource() == buybutton) {
+        if (locatebuybox.getSelectedItem().equals("Buy only")) {
+            thisrent = "='no'";
+        } else if (locatebuybox.getSelectedItem().equals("Rent only")) {
             thisrent = "='yes'";
         } else {
             thisrent = "IS NOT NULL";
@@ -481,8 +524,9 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
 
     }
 
-    void showAllResults() throws Exception {
+    void showAllResults(ActionListener al) throws Exception {
         properties = estatedao.getAllEstates();
+
     }
 
 }

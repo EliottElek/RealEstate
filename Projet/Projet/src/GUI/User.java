@@ -5,6 +5,7 @@ import java.awt.GridLayout;
 import java.lang.Object;
 import java.util.Calendar;
 import java.sql.Date;
+import java.util.ArrayList;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -17,6 +18,7 @@ public abstract class User {
     protected String mail;
     protected String password;
     protected int id;
+    protected ArrayList<Booking> bookings;
     JPanel PANELINFOS;
     MyProfileModify PANELMODIFY;
     JLabel labelfirstname;
@@ -25,6 +27,7 @@ public abstract class User {
     JLabel labelemail;
     JLabel labeldate;
     Font font;
+    
 
     public User(int id, String firstname, String lastname, Date birthdate, String adress, String mail) {
         this.id = id;
@@ -36,6 +39,7 @@ public abstract class User {
         PANELINFOS = new JPanel();
         PANELMODIFY = new MyProfileModify(this);
         font = new Font("Consolas", Font.PLAIN, 18);
+        bookings = new ArrayList();
         showInfosMyProfile();
     }
 
@@ -150,5 +154,18 @@ public abstract class User {
         labeladress.setText(this.adress);
         labeldate.setText(this.birthdate.toString());
         labelemail.setText(this.mail);
+    }
+    
+    public void addBooking(Booking booking)
+    {
+        this.bookings.add(booking);
+    }
+    public ArrayList getAllBookings()
+    {
+        return this.bookings;
+    }
+    public void removeBooking(Booking booking)
+    {
+        this.bookings.remove(booking);
     }
 }

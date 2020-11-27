@@ -214,18 +214,19 @@ public class EmployeeDAO {
     }
 
     private Employee convertRowToEmployee(ResultSet myRs) throws SQLException {
+        Employee temp = null;
+        if (myRs.next()) {
+            int id = myRs.getInt("identifier");
+            String lastName = myRs.getString("lastname");
+            String firstName = myRs.getString("firstname");
+            String email = myRs.getString("mail");
+            Date date = myRs.getDate("birthdate");
+            int number = myRs.getInt("number");
+            String adress = myRs.getString("adress");
 
-        int id = myRs.getInt("identifier");
-        String lastName = myRs.getString("lastname");
-        String firstName = myRs.getString("firstname");
-        String email = myRs.getString("mail");
-        Date date = myRs.getDate("birthdate");
-        int number = myRs.getInt("number");
-        String adress = myRs.getString("adress");
-
-        Employee temp = new Employee(id, firstName, lastName, date, adress, email);
-        temp.setEmployeeNb(number);
-
+            temp = new Employee(id, firstName, lastName, date, adress, email);
+            temp.setEmployeeNb(number);
+        }
         return temp;
     }
 

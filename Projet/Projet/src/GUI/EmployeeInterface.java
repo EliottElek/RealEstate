@@ -42,6 +42,7 @@ public class EmployeeInterface extends JPanel {
     EmployeeDAO employeedao;
     BuyerDAO buyerdao;
     SellerDAO sellerdao;
+    BookingDAO bookingdao;
     JPanel panelsellers;
     JPanel panelbuyers;
     JPanel panelemployees;
@@ -461,7 +462,6 @@ public class EmployeeInterface extends JPanel {
             bufferEmployeesProfiles[i].add(employeesProfiles[i]);
             ShowPANEL.add(bufferEmployeesProfiles[i]);
         }
-        ShowPANEL.setBackground(Color.yellow);
         SCROLLER2 = new JScrollPane(ShowPANEL);
         SCROLLER2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         SCROLLER2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);

@@ -14,6 +14,7 @@ public interface BuyerConstInterface {
     final String[] typesofproximities = {"All", "Far", "Intermediate", "Close", "Very close"};
     final String[] minrooms = {"No min", "1", "2", "3", "4", "5"};
     final String[] gardentype = {"All", "No garden", "Garden"};
+    final String[] rentorbuychoice = {"All", "Buy only", "Rent only"};
     final String[] maxrooms = {"No max", "1", "2", "3", "4", "5", "6", "6+"};
     final String[] typesrenovation = {"All", "No renovation", "Very little renovation", "Some renovation", "Important renovation", "Complete renovation"};
     final String[] propertystate = {"All", "Brand new", "Recent", "Old", "Very old"};

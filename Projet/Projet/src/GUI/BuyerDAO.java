@@ -110,7 +110,7 @@ public class BuyerDAO {
         stmt.execute(dbop);
         stmt.close();
     }
-    
+
     public void removeBuyer(User user) throws SQLException {
         int reponse = JOptionPane.showConfirmDialog(null,
                 "Do you really want to delete this buyer ?",
@@ -125,23 +125,18 @@ public class BuyerDAO {
         }
     }
 
-    public Buyer getBuyerAccount(String lastName, String password) throws Exception {
+    public Buyer getBuyerAccount(String mail, String password) throws Exception {
         Buyer buyer = null;
         PreparedStatement myStmt = null;
         ResultSet myRs = null;
-
         try {
-            lastName += "%";
             myStmt = myConn.prepareStatement("SELECT * FROM `buyers` WHERE `mail` like ? && `password` like ? ");
 
-            myStmt.setString(1, lastName);
+            myStmt.setString(1, mail);
             myStmt.setString(2, password);
             myRs = myStmt.executeQuery();
+            buyer = convertRowToBuyer(myRs);
 
-            while (myRs.next()) {
-                buyer = convertRowToBuyer(myRs);
-                buyer.showInfos();
-            }
         } finally {
             close(myStmt, myRs);
         }
@@ -173,23 +168,23 @@ public class BuyerDAO {
         boolean checked = false;
         try {
             System.out.println(mail + password);
-            Statement stmt = myConn.createStatement();
-            String qry = "SELECT `mail`, `password` FROM `buyers` WHERE 1; ";
-            ResultSet rs = stmt.executeQuery(qry);
-            while (rs.next()) {
-                String thismail = rs.getString("mail");
-                String thispassord = rs.getString("password");
-                if ((thismail.equals(mail)) && (thispassord.equals(password))) {
-                    checked = true;
-                    break;
-                } else {
-                    checked = false;
+            try (Statement stmt = myConn.createStatement()) {
+                String qry = "SELECT `mail`, `password` FROM `buyers` WHERE 1; ";
+                ResultSet rs = stmt.executeQuery(qry);
+                while (rs.next()) {
+                    String thismail = rs.getString("mail");
+                    String thispassord = rs.getString("password");
+                    if ((thismail.equals(mail)) && (thispassord.equals(password))) {
+                        checked = true;
+                        break;
+                    } else {
+                        checked = false;
+                    }
+                }
+                if (!checked) {
+                    JOptionPane.showMessageDialog(null, "Cannot find account.", "fail", JOptionPane.WARNING_MESSAGE);
                 }
             }
-            if (!checked) {
-                JOptionPane.showMessageDialog(null, "Cannot find account.", "fail", JOptionPane.WARNING_MESSAGE);
-            }
-            stmt.close();
         } catch (SQLException ex) {
             Logger.getLogger(BuyerDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -215,16 +210,18 @@ public class BuyerDAO {
     }
 
     private Buyer convertRowToBuyer(ResultSet myRs) throws SQLException {
+        Buyer temp = null;
+        if (myRs.next()) {
 
-        int id = myRs.getInt("identifier");
-        String lastName = myRs.getString("lastname");
-        String firstName = myRs.getString("firstname");
-        String email = myRs.getString("mail");
-        Date date = myRs.getDate("birthdate");
-        String adress = myRs.getString("adress");
+            int id = myRs.getInt("identifier");
+            String lastName = myRs.getString("lastname");
+            String firstName = myRs.getString("firstname");
+            String email = myRs.getString("mail");
+            Date date = myRs.getDate("birthdate");
+            String adress = myRs.getString("adress");
 
-        Buyer temp = new Buyer(id, firstName, lastName, date, adress, email);
-
+            temp = new Buyer(id, firstName, lastName, date, adress, email);
+        }
         return temp;
     }
 

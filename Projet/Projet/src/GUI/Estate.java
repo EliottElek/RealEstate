@@ -12,6 +12,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Blob;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
@@ -37,6 +38,7 @@ public abstract class Estate implements SellerConstInterface {
     private int factor;
     private String description;
     private int id;
+    private ArrayList<Booking> bookings;
     JPanel infos;
     JPanel imgs;
     JButton modify;
@@ -70,6 +72,7 @@ public abstract class Estate implements SellerConstInterface {
         this.image2 = image2;
         this.image3 = image3;
         images = new Blob[3];
+        bookings = new ArrayList();
         images[0] = this.image1;
         images[1] = this.image2;
         images[2] = this.image3;
@@ -192,6 +195,7 @@ public abstract class Estate implements SellerConstInterface {
     }
 
     public void removeInfos(JPanel panel) {
+        
         panel.remove(imagesScroller);
         panel.remove(imgs);
         panel.remove(infos);
@@ -251,5 +255,20 @@ public abstract class Estate implements SellerConstInterface {
 
     public void setVisibleButton(boolean bool) {
         modify.setVisible(bool);
+    }
+    
+    public void addBooking(Booking booking)
+    {
+        this.bookings.add(booking);
+    }
+    
+    public void removeBooking(Booking booking)
+    {
+        this.bookings.remove(booking);
+    }
+    
+    public ArrayList<Booking> getAllBookings()
+    {
+        return this.bookings;
     }
 }
