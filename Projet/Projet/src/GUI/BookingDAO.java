@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -67,7 +68,7 @@ public class BookingDAO {
         int id = myRs.getInt("identifier");
         String lastname = myRs.getString("lastname");
         String adress = myRs.getString("adress");
-        int buyerID = myRs.getInt("buyerID");
+        int buyerID = myRs.getInt("userID");
         int estateID = myRs.getInt("estateID");
         Date date = myRs.getDate("date");
 
@@ -77,19 +78,16 @@ public class BookingDAO {
     }
 
     void addBooking(Estate estate, User buyer, Date date) throws SQLException {
-        String dbop = "INSERT INTO `booking` (`identifier`,`estateID`, `userID`, `date`, `lastname`, `adress`) VALUES (NULL,?,?,?,?,?);";
-        PreparedStatement stmt = myConn.prepareStatement(dbop);
+        Statement stmt = myConn.createStatement();
         int buyerID = buyer.getID();
         int estateID = estate.getID();
         String adress = estate.getAdress();
         String lastname = buyer.getLastName();
-        stmt.setInt(1,estateID);
-        stmt.setInt(2,buyerID);
-        stmt.setDate(3,date);
-        stmt.setString(4,lastname);
-        stmt.setString(5,adress);
+        String dbop = "INSERT INTO `bookings` (`identifier`,`estateID`, `userID`, `date`, `lastname`, `adress`)  VALUES (NULL, '" + estateID + "', '" + buyerID + "','" + date + "','" + lastname + "','" + adress + "');";
         stmt.execute(dbop);
         stmt.close();
+        JOptionPane.showMessageDialog(null, "Booking has been saved.", "succes", JOptionPane.INFORMATION_MESSAGE);
+
     }
 
     private static void close(Connection myConn, Statement myStmt, ResultSet myRs)

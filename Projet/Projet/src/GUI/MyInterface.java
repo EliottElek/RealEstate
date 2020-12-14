@@ -106,6 +106,7 @@ public class MyInterface extends JFrame implements ActionListener, ChangeListene
         employeeinterface.viewprofiles.addActionListener(this);
         employeeinterface.back.addActionListener(this);
         employeeinterface.viewproperties.addActionListener(this);
+        employeeinterface.viewallbookings.addActionListener(this);
         //addibg actionlisteners to all button from SellerInterface panel
         sellerinterface.add.addActionListener(this);
         sellerinterface.locate.addActionListener(this);

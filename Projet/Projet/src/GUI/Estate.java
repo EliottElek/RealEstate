@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.PopupMenu;
+import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,7 +20,9 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -45,6 +48,8 @@ public abstract class Estate implements SellerConstInterface {
     JButton save;
     JButton delete;
     JButton booking;
+    JButton book;
+    JComboBox datebox;
     JLabel[] imagefin = new JLabel[3];
     JScrollPane imagesScroller;
     JComboBox newlocation;
@@ -91,10 +96,7 @@ public abstract class Estate implements SellerConstInterface {
         save.setFocusable(false);
         modify.setVisible(false);
         delete.setVisible(false);
-    }
-
-    public void updateInfos() {
-
+        this.book = new JButton("book");
     }
 
     public void setInfos() {
@@ -124,6 +126,25 @@ public abstract class Estate implements SellerConstInterface {
         infos.add(booking);
         infos.add(delete);
         infos.add(modify);
+    }
+    
+    public void showBookingFrame(java.sql.Date[] dates, ActionEvent ae) {
+        this.datebox = new JComboBox(dates);
+        Object[] options = new Object[]{};
+        JOptionPane jop = new JOptionPane("Please Select",
+                JOptionPane.QUESTION_MESSAGE,
+                JOptionPane.DEFAULT_OPTION,
+                null, options, null);
+
+        //add combos to JOptionPane
+        jop.add(this.datebox);
+        jop.add(this.book);
+
+        //create a JDialog and add JOptionPane to it 
+        JDialog diag = new JDialog();
+        diag.getContentPane().add(jop);
+        diag.pack();
+        diag.setVisible(true);
     }
 
     public void setModifyingInfos() {
@@ -193,7 +214,6 @@ public abstract class Estate implements SellerConstInterface {
         panel.add(infos);
 
     }
-
     public void removeInfos(JPanel panel) {
         
         panel.remove(imagesScroller);

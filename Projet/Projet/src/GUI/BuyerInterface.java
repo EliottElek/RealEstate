@@ -24,8 +24,10 @@ import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -82,7 +84,6 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     JComboBox locate;
     JComboBox gardenchoice;
     JComboBox locatebuybox;
-
     JSlider price;
     JSlider minarea;
     JSlider maxarea;
@@ -95,6 +96,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     JButton latestadds;
     JButton viewall;
     ArrayList<Estate> properties;
+    
 
     BuyerInterface(ArrayList<Estate> properties, int factor, EstateDAO estatedao, BookingDAO bookingdao) throws Exception {
         this.factor = factor;
@@ -103,8 +105,8 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         this.bookingdao = bookingdao;
         //this.setBackground(Color.lightGray);
         //creating default font
-        Font font = new Font("Times New Roman", Font.PLAIN, 18 * factor);
-        Font font2 = new Font("Times New Roman", Font.PLAIN, 10);
+        Font font = new Font("Times New Roman", Font.PLAIN, 22 * factor);
+        Font font2 = new Font("Times New Roman", Font.PLAIN, 13);
         //setting the layout
         this.setLayout(new BorderLayout(10, 10));
         //setting the size
@@ -148,7 +150,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         //PANEL11.setLayout(new GridLayout(this.properties.size(), 2));
         PANEL5.setLayout(new GridLayout(1, 2, 2, 2));
         PANEL6.setLayout(new GridLayout(2, 1, 2, 2));
-        PANEL7.setLayout(new GridLayout(12, 1, 2, 2));
+        PANEL7.setLayout(new GridLayout(16, 1, 2, 2));
         PANEL8.setLayout(new GridLayout(8, 1, 2, 2));
         PANEL9.setLayout(new GridLayout(8, 2, 2, 2));
         PANEL3.setLayout(new GridLayout(7, 1, 2, 2));
@@ -189,8 +191,8 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         viewall = new JButton("view all");
         //creating sliders
         price = new JSlider(5, 80, 20);
-        minarea = new JSlider(9, 500, 60);
-        maxarea = new JSlider(20, 1000, 120);
+        minarea = new JSlider(9, 500, 10);
+        maxarea = new JSlider(20, 1000, 800);
         gardenareachosen = new JSlider(0, 500, 60);
         //setting buttons to not focudable
         search.setFocusable(false);
@@ -255,10 +257,10 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         PANEL10.add(logout, BorderLayout.NORTH);
         //adding PANEL6 and PANEL7 to PANEL5
         PANEL5.add(PANEL6);
-        SCROLLER2 = new JScrollPane(PANEL7);
-        SCROLLER2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        SCROLLER2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        PANEL5.add(SCROLLER2);
+       // SCROLLER2 = new JScrollPane(PANEL7);
+        //SCROLLER2.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        //SCROLLER2.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        PANEL5.add(PANEL7);
         //adding PANELS 8 and 9 to PANEL6
         //add everything to the PANELS
         PANEL6.add(PANEL8);
@@ -295,7 +297,10 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         PANEL7.add(gardenchoice);
         PANEL7.add(gardenareachosen);
         PANEL7.add(gardenarea);
-        //PANEL7.add(new JLabel());
+        PANEL7.add(new JLabel());
+         PANEL7.add(new JLabel());
+         PANEL7.add(new JLabel());
+         PANEL7.add(new JLabel());
         PANEL7.add(search);
         PANEL3.add(latestadds, BorderLayout.CENTER);
         PANEL3.add(viewall, BorderLayout.SOUTH);
@@ -343,7 +348,7 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
             propertie.removeInfos(PANEL11);
 
         }
-        PANEL5.remove(SCROLLER2);
+        PANEL5.removeAll();
         properties.removeAll(properties);
 
     }
@@ -380,52 +385,33 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
     }
 
     public void bookFunction(ActionEvent ae, User buyer, ActionListener al) throws SQLException {
-
+        java.sql.Date date;
         for (Estate propertie : properties) {
             if (ae.getSource() == propertie.booking) {
-                java.sql.Date date = returnDate(returnBookingDates(), al, ae);
+                propertie.showBookingFrame(returnBookingDates(), ae);
+                propertie.book.addActionListener(al);
+            }
+            if (ae.getSource() == propertie.book) {
+                System.out.println("ouais");
+                date = (java.sql.Date) propertie.datebox.getSelectedItem();
                 System.out.println("date :" + date.toString());
-                System.out.println("jiji");
+                bookingdao.addBooking(propertie, buyer, date);
+                break;
             }
         }
     }
 
     public java.sql.Date[] returnBookingDates() {
-        java.sql.Date utilDate = new java.sql.Date(1,1,1);
+        java.sql.Date utilDate = new java.sql.Date(1, 1, 1);
         java.sql.Date FinalDates[] = new java.sql.Date[30];
         java.util.Date dates[] = new java.util.Date[30];
         for (int i = 0; i < 30; i++) {
-            System.out.println("date : " + utilDate.getDate() + "/" + utilDate.getMonth() + "/" + utilDate.getYear());
-            utilDate.setDate(utilDate.getDay()+1);
+            utilDate.setDate(utilDate.getDay() + 1);
             dates[i] = utilDate;
-            FinalDates[i]= new java.sql.Date(dates[i].getDate(),dates[i].getMonth(),dates[i].getYear());
+            FinalDates[i] = new java.sql.Date(dates[i].getDate(), dates[i].getMonth(), dates[i].getYear());
         }
 
         return FinalDates;
-    }
-
-    public java.sql.Date returnDate(java.sql.Date[] dates, ActionListener al, ActionEvent ae) {
-        java.sql.Date selectdate = new  java.sql.Date(1,1,1);
-        JFrame popup = new JFrame("book visit");
-        popup.setLayout(new GridLayout());
-        popup.setSize(400, 300);
-        JPanel toppart = new JPanel();
-        toppart.setBackground(Color.GRAY);
-        JPanel rest = new JPanel();
-        popup.add(toppart, BorderLayout.NORTH);
-        popup.add(rest, BorderLayout.CENTER);
-        JComboBox box = new JComboBox(dates);
-        rest.add(box);
-        popup.setVisible(true);
-        popup.setResizable(false);
-        JButton book = new JButton("book");
-        rest.add(book);
-        book.setFocusable(false);
-        book.addActionListener(al);
-        if (ae.getSource() == book) {
-            selectdate = (Date) box.getSelectedItem();
-        }
-        return selectdate;
     }
 
     void showResearchResults(ActionEvent ae) throws Exception {
@@ -456,8 +442,9 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         if (price.getValue() >= 79) {
             thisprice = 1000000000;
         } else {
-            thisgardenarea = gardenareachosen.getValue();
+            thisprice = price.getValue();
         }
+        
         if (gardenareachosen.getValue() >= 999) {
             thismaxarea = 1000000;
         } else {
@@ -483,10 +470,18 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
         } else {
             thisproximity = "='" + (String) proximitychosen.getSelectedItem() + "'";
         }
-        if (gardenchoice.getSelectedItem().equals("All")) {
-            thisgarden = "IS NOT NULL";
+        if (gardenchoice.getSelectedItem().equals("No garden")) {
+            thisgarden = "='no'";
+            thisgardenarea = 0;
+        } else if (gardenchoice.getSelectedItem().equals("Garden")) {
+            thisgarden = "='yes'";
+            if (gardenareachosen.getValue() >= 999) {
+            thismaxarea = 1000000;
         } else {
-            thisgarden = "='" + gardenornot + "'";
+            thisgardenarea = gardenareachosen.getValue();
+        }
+        } else {
+            thisgarden = "IS NOT NULL";
         }
         if (locatebuybox.getSelectedItem().equals("Buy only")) {
             thisrent = "='no'";
@@ -496,16 +491,16 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
             thisrent = "IS NOT NULL";
         }
         if (!nbminroomschosen.getSelectedItem().equals("No min")) {
-            thisminroom = (int) nbminroomschosen.getSelectedItem();
+            thisminroom = Integer.parseInt((String) nbminroomschosen.getSelectedItem());
         }
-        if (!nbmaxroomschosen.getSelectedItem().equals("No max")) {
-            thismaxroom = (int) nbminroomschosen.getSelectedItem();
+        if (!nbmaxroomschosen.getSelectedItem().equals("No max") && !nbmaxroomschosen.getSelectedItem().equals("6+")) {
+            thismaxroom = Integer.parseInt((String) nbminroomschosen.getSelectedItem());
         }
         if (!nbminbthroomschosen.getSelectedItem().equals("No min")) {
-            thisminbthroom = (int) nbminbthroomschosen.getSelectedItem();
+            thisminbthroom = Integer.parseInt((String) nbminbthroomschosen.getSelectedItem());
         }
-        if (!nbmaxbthroomschosen.getSelectedItem().equals("No max")) {
-            thismaxroom = (int) nbmaxbthroomschosen.getSelectedItem();
+        if (!nbmaxbthroomschosen.getSelectedItem().equals("No max") && !nbmaxbthroomschosen.getSelectedItem().equals("6+")) {
+            thismaxroom = Integer.parseInt((String) nbmaxbthroomschosen.getSelectedItem());
         }
         properties = estatedao.searchEstate(thislocate,
                 thistype,
@@ -526,7 +521,10 @@ public class BuyerInterface extends JPanel implements BuyerConstInterface {
 
     void showAllResults(ActionListener al) throws Exception {
         properties = estatedao.getAllEstates();
+        for (Estate propertie : properties) {
+            System.out.println("id " + propertie.getID());
 
+        }
     }
 
 }

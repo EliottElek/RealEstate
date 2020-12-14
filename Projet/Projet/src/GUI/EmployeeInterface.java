@@ -3,6 +3,7 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -31,11 +32,13 @@ public class EmployeeInterface extends JPanel {
     JPanel PANEL6;
     JPanel PANEL7;
     JPanel ShowPANEL;
+    JPanel ShowPANEL2;
     JButton logout;
     JButton profile;
     JButton viewprofiles;
     JButton searchprofile;
     JButton back;
+    JButton viewallbookings;
     JButton viewproperties;
     JComboBox menuderoulant;
     EstateDAO estatedao;
@@ -46,9 +49,9 @@ public class EmployeeInterface extends JPanel {
     JPanel panelsellers;
     JPanel panelbuyers;
     JPanel panelemployees;
-    ArrayList<Estate> properties;
     JScrollPane SCROLLER;
     JScrollPane SCROLLER2;
+    JScrollPane SCROLLER3;
     MyProfile[] buyersProfiles;
     MyProfile[] sellersProfiles;
     MyProfile[] employeesProfiles;
@@ -56,6 +59,9 @@ public class EmployeeInterface extends JPanel {
     JPanel[] bufferSellersProfiles;
     JPanel[] bufferEmployeesProfiles;
     boolean allprop = false;
+    boolean allbooks = false;
+    ArrayList<Estate> properties;
+    ArrayList<Booking> bookings;
     ArrayList<Buyer> buyerslist;
     ArrayList<Seller> sellerslist;
     ArrayList<Employee> employeeslist;
@@ -67,7 +73,9 @@ public class EmployeeInterface extends JPanel {
         sellerslist = new ArrayList();
         employeeslist = new ArrayList();
         properties = new ArrayList();
+        bookings = new ArrayList();
         estatedao = new EstateDAO();
+        bookingdao = new BookingDAO();
         this.employeedao = employeedao;
         this.buyerdao = buyerdao;
         this.sellerdao = sellerdao;
@@ -82,19 +90,21 @@ public class EmployeeInterface extends JPanel {
         PANEL6 = new JPanel();
         PANEL7 = new JPanel();
         ShowPANEL = new JPanel();
+        ShowPANEL2 = new JPanel();
         profile = new JButton("my profile");
         logout = new JButton("log out");
         searchprofile = new JButton("search user");
         viewprofiles = new JButton("view all profiles");
         back = new JButton("back");
         viewproperties = new JButton("view properties");
+        viewallbookings = new JButton("view all bookings");
         profile.setFocusable(false);
         logout.setFocusable(false);
         viewprofiles.setFocusable(false);
         back.setFocusable(false);
         PANEL1.setLayout(new BorderLayout());
         PANEL6.setLayout(new BorderLayout());
-        PANEL5.setLayout(new BorderLayout());
+        PANEL5.setLayout(new FlowLayout());
         Color col = new Color(155, 155, 70);//darker
         Color col2 = new Color(200, 200, 130);//lighter
         PANEL1.setBackground(col);
@@ -120,14 +130,31 @@ public class EmployeeInterface extends JPanel {
         PANEL1.add(PANEL6, BorderLayout.EAST);
         PANEL6.add(profile, BorderLayout.CENTER);
         PANEL6.add(logout, BorderLayout.NORTH);
-        PANEL4.add(viewprofiles);
-        PANEL4.add(viewproperties);
-        PANEL4.add(back);
+        PANEL5.add(viewprofiles);
+        PANEL5.add(viewproperties);
+        PANEL5.add(viewallbookings);
+        PANEL3.add(back);
         back.setVisible(false);
+    }
+
+    public void backToMainInterface() {
+        back.setVisible(false);
+        PANEL5.removeAll();
+        PANEL7.removeAll();
+        ShowPANEL.removeAll();
+        PANEL5.setLayout(new FlowLayout());
+        PANEL5.add(viewprofiles);
+        PANEL5.add(viewproperties);
+        PANEL5.add(viewallbookings);
+        back.setVisible(true);
     }
 
     public void EmployeeInteface(ActionEvent ae, ActionListener al) throws SQLException, Exception {
         if (ae.getSource() == viewprofiles) {
+            ShowPANEL.removeAll();
+            PANEL5.removeAll();
+            PANEL7.removeAll();
+            PANEL5.setLayout(new BorderLayout());
             viewprofiles.setVisible(false);
             viewproperties.setVisible(false);
             back.setVisible(true);
@@ -138,8 +165,8 @@ public class EmployeeInterface extends JPanel {
             }
         } else if ((ae.getSource() == back) && !allprop) {
             PANEL7.removeAll();
-            ShowPANEL.removeAll();
             PANEL5.removeAll();
+            backToMainInterface();
             viewprofiles.setVisible(true);
             viewproperties.setVisible(true);
             back.setVisible(false);
@@ -147,13 +174,42 @@ public class EmployeeInterface extends JPanel {
             invalidate();
             validate();
         }
+        if (ae.getSource() == viewallbookings) {
+            PANEL5.removeAll();
+            PANEL7.removeAll();
+            ShowPANEL.removeAll();
+            showAllBookings(al);
+            allbooks = true;
+            repaint();
+            invalidate();
+            validate();
+
+        } else if ((ae.getSource() == back) && allbooks) {
+            {
+                cleanBookings();
+                PANEL7.removeAll();
+                PANEL5.removeAll();
+                backToMainInterface();
+                viewprofiles.setVisible(true);
+                viewproperties.setVisible(true);
+                back.setVisible(false);
+                repaint();
+                invalidate();
+                validate();
+            }
+        }
+
         if (ae.getSource() == viewproperties) {
+            PANEL5.removeAll();
+            PANEL7.removeAll();
+            ShowPANEL.removeAll();
+            PANEL5.setLayout(new BorderLayout());
             viewprofiles.setVisible(false);
             viewproperties.setVisible(false);
             allprop = true;
             cleanProperties();
             try {
-                showAllResults();
+                getAllEstates();
                 showResults(al);
                 repaint();
                 invalidate();
@@ -163,10 +219,15 @@ public class EmployeeInterface extends JPanel {
             }
 
         } else if ((ae.getSource() == back) && allprop) {
+            cleanProperties();
             PANEL7.removeAll();
+            PANEL5.removeAll();
+            ShowPANEL.removeAll();
+            backToMainInterface();
             viewprofiles.setVisible(true);
             viewproperties.setVisible(true);
-            backToSearchMenu();
+            back.setVisible(false);
+            //backToSearchMenu();
             allprop = false;
             repaint();
             invalidate();
@@ -331,7 +392,7 @@ public class EmployeeInterface extends JPanel {
                 viewprofiles.setVisible(true);
                 viewproperties.setVisible(true);
                 back.setVisible(false);
-                showAllResults();
+                getAllEstates();
                 showResults(al);
                 repaint();
                 invalidate();
@@ -473,6 +534,23 @@ public class EmployeeInterface extends JPanel {
 
     }
 
+    public void showAllBookings(ActionListener ae) throws Exception {
+        getAllBookings();
+        ShowPANEL2.setLayout(new GridLayout(this.bookings.size(), 1));
+        for (Booking booking : bookings) {
+            ShowPANEL2.add(booking.bookingPANEL);
+        }
+        SCROLLER3 = new JScrollPane(ShowPANEL2);
+        SCROLLER3.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        SCROLLER3.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        PANEL5.add(SCROLLER3);
+        back.setVisible(true);
+        repaint();
+        invalidate();
+        validate();
+
+    }
+
     void cleanProperties() {
 
         for (Estate propertie : properties) {
@@ -482,10 +560,22 @@ public class EmployeeInterface extends JPanel {
         properties.removeAll(properties);
 
     }
+    public void cleanBookings()
+    {
+        for (Booking booking : bookings) {
+            ShowPANEL2.remove(booking.bookingPANEL);
+        }
 
-    void showAllResults() throws Exception {
+        properties.removeAll(properties);
+    }
+
+    void getAllEstates() throws Exception {
         cleanProperties();
         properties = estatedao.getAllEstates();
+    }
+
+    void getAllBookings() throws Exception {
+        bookings = bookingdao.getAllBookings();
     }
 
     public void showResults(ActionListener al) throws IOException {

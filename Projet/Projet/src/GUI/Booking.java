@@ -5,7 +5,10 @@
  */
 package GUI;
 
+import java.awt.Font;
 import java.sql.Date;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 /**
  *
@@ -19,6 +22,7 @@ public class Booking {
     private int estateID;
     private String lastname;
     private String adress;
+    JPanel bookingPANEL;
 
     public Booking(Date date, int buyerID, int estateID, String adress, String lastname) {
         this.date = date;
@@ -26,7 +30,22 @@ public class Booking {
         this.estateID = estateID;
         this.adress = adress;
         this.lastname = lastname;
+        bookingPANEL = new JPanel();
+        createBookingPanel();
 
+    }
+
+    public void createBookingPanel() {
+        Font font = new Font("Times New Roman", Font.PLAIN, 22);
+        JLabel adress = new JLabel("adress : " + this.adress);
+        JLabel lastname = new JLabel("lastname : " + this.lastname);
+        JLabel date = new JLabel("date : "+ this.date.toString());
+        adress.setFont(font);
+        lastname.setFont(font);
+        date.setFont(font);
+        bookingPANEL.add(adress);
+        bookingPANEL.add(lastname);
+        bookingPANEL.add(date);
     }
 
     public void setDate(Date date) {
